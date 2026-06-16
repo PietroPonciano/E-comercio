@@ -2,7 +2,8 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Mensagems', {
+    // Alterado o nome da tabela de 'Mensagems' para 'Mensagens'
+    await queryInterface.createTable('Mensagens', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,19 +11,21 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       mensagem: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull: true
       },
       imagem_url: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(255),
+        allowNull: true
       },
-      Ticket_ID: {
+      ticket_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: 'Tickets', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      Usuario_ID: {
+      usuario_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: 'Usuarios', key: 'id' },
@@ -40,6 +43,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Mensagems');
+    await queryInterface.dropTable('Mensagens');
   }
 };

@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 
 const { sequelize } = require('./src/models');
-const routes = require('./src/routes');
+const registrarRotas = require('./src/routes');
 
 const app = express();
 
@@ -13,8 +13,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rotas
-app.use('/api', routes);
+registrarRotas(app);
 
 // Rota de teste
 app.get('/', (req, res) => {
@@ -28,15 +27,17 @@ const HOST = process.env.HOST || 'localhost';
 
 async function startServer() {
     try {
-        // Testa conexão com o banco
         await sequelize.authenticate();
         console.log('Banco conectado com sucesso!');
 
-        // Sincroniza models (opcional)
-        // await sequelize.sync();
-
-        app.listen(PORT, () => {
-            console.log(`Servidor rodando em http://${HOST}:${PORT}`);
+        
+        app.listen(PORT, HOST, () => {
+            
+            const displayHost = HOST === '0.0.0.0' ? 'localhost' : HOST;
+            console.log(`Servidor rodando em http://${displayHost}:${PORT}`);
+            if (HOST === '0.0.0.0') {
+                console.log(`Acessível na rede local pelo IP do seu Mac na porta ${PORT}`);
+            }
         });
 
     } catch (error) {

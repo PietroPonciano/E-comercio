@@ -10,7 +10,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nome: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(50), // Limitar o tamanho do input previne abusos de armazenamento (DoS)
+        allowNull: false 
       },
       createdAt: {
         allowNull: false,

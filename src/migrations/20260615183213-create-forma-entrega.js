@@ -10,10 +10,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nome: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(50),
+        allowNull: false // SEGURANÇA: Evita registros órfãos de nome
       },
       valor_fixo_frete: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL(10, 2), // Garante duas casas decimais estritas no banco
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

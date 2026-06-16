@@ -10,32 +10,37 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nome: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(100),
+        allowNull: false 
       },
       endereco_entrega: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(255),
+        allowNull: false 
       },
       preco_total: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL(10, 2), 
+        allowNull: false 
       },
       status: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(20),
+        allowNull: false,
+        defaultValue: 'pendente' 
       },
-      Usuario_ID: {
+      usuario_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: 'Usuarios', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      Forma_Pagamento_ID: {
+      forma_pagamento_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: 'FormaPagamentos', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'
       },
-      Forma_Entrega_ID: {
+      forma_entrega_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: 'FormaEntregas', key: 'id' },

@@ -10,7 +10,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nome: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(30), // Limita a 30 caracteres no banco
+        allowNull: false,
+        unique: true      
       },
       createdAt: {
         allowNull: false,
