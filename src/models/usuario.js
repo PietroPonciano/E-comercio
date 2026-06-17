@@ -75,6 +75,35 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: { msg: "A permissão (Role) do usuário é obrigatória." }
       }
+    },
+    reset_senha_codigo_hash: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    reset_senha_expira_em: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    reset_senha_enviado_em: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    email_verificado: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    email_verificacao_codigo_hash: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    email_verificacao_expira_em: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    email_verificacao_enviado_em: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
     sequelize,

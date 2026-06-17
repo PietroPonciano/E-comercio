@@ -1,427 +1,428 @@
-# Documentação da API E-comercio
+# Documentacao da API E-comercio
 
-A **E-comercio** é uma API construída com Node.js, Express e Sequelize para o gerenciamento completo de um e-commerce. Sua principal função é o controle de vendas integrado à logística de entrega e ao suporte ao cliente (sistema de tickets).
+A **E-comercio** e uma API construida com Node.js, Express e Sequelize para servir como base de um sistema de e-commerce com autenticacao, usuarios, produtos, compras, logistica e tickets de suporte.
 
----
-
-## Perfis de Acesso (Roles) e Permissões
-
-O sistema é dividido em três perfis principais de acesso, cada um com diferentes níveis de permissões de leitura (Ver informações) e escrita (Editar/Adicionar/Remover).
-
-* **Administrador (Adm):** Possui controle total. Pode editar, adicionar e remover permissões, informações de qualquer usuário, gerenciar o catálogo de produtos e interagir com todo o sistema.
-* **Atendente:** Focado no suporte e logística. Pode enviar e visualizar mensagens de todos os tickets, ver informações dos usuários e acompanhar pedidos.
-* **Usuário (Cliente):** Focado na experiência de compra. Pode comprar produtos, visualizar seu histórico de compras, abrir e responder os seus tickets de ajuda e gerenciar seu próprio perfil.
+Atualmente, a parte mais implementada da API e o modulo de autenticacao. As rotas de produtos, usuarios, compras e tickets ja existem, mas ainda retornam respostas simbolicas em grande parte e precisam evoluir para controllers/services reais.
 
 ---
 
-## Arquitetura de Pastas (Padrão MSC)
+## Estado Atual da API
 
-A estrutura do projeto segue o padrão de separação de responsabilidades para garantir escalabilidade:
+### Implementado
+
+* Cadastro de usuario com hash de senha via `bcryptjs`.
+* Validacao de entrada com `joi`.
+* Validacao de qualidade de senha em service proprio.
+* Login com JWT.
+* Bloqueio de login para e-mail ainda nao verificado.
+* Verificacao de e-mail por codigo enviado via Resend.
+* Reenvio de codigo de verificacao com cooldown anti-spam.
+* Reset de senha por codigo enviado via Resend.
+* Reenvio de codigo de reset pela propria rota `forgot-password`, tambem com cooldown.
+* Migrations e models Sequelize para usuarios, roles, produtos, compras, tickets, mensagens, formas de pagamento e formas de entrega.
+
+### Parcial ou Simbolico
+
+* Produtos, compras, tickets e usuarios possuem rotas criadas, mas ainda nao possuem regra de negocio completa.
+* Permissoes por role estao modeladas no banco, mas ainda nao existe middleware completo de autorizacao por perfil.
+* O dominio de compras ainda nao possui tabela de itens da compra, entao pedidos com multiplos produtos ainda precisam ser modelados.
+
+---
+
+## Arquitetura de Pastas
 
 ```text
 src/
-├── config/             # Configurações do Sequelize (database.js) e variáveis de ambiente (.env)
-├── controllers/        # Controladores das requisições, chamam os serviços e retornam o HTTP
-├── migrations/         # Arquivos de migração para versionamento do banco de dados
-├── middlewares/        # Filtros de Autenticação (JWT) e Validação de Roles/Permissões
-├── models/             # Definição das tabelas e associações (relacionamentos) do Sequelize
-├── routes/             # Definição e roteamento dos endpoints da API
-├── services/           # Regras de negócio da aplicação
-└── server.js           # Ponto de entrada (entry point) e inicialização do Express
+├── config/          # Configuracao do Sequelize por ambiente
+├── controllers/     # Camada HTTP: recebe req, chama services e responde JSON
+├── migrations/      # Versionamento do banco de dados
+├── middlewares/     # Autenticacao JWT e validacao de schemas
+├── models/          # Models e associacoes Sequelize
+├── routes/          # Definicao das rotas Express
+├── schemas/         # Schemas Joi para validacao de entrada
+├── seeders/         # Dados iniciais
+└── services/        # Regras de negocio e integracoes externas
 
+index.js             # Ponto de entrada da aplicacao
+```
+
+O projeto segue uma variacao simples do padrao MSC:
+
+* **Routes:** definem endpoint e middlewares.
+* **Controllers:** lidam com entrada/saida HTTP.
+* **Services:** concentram regras de negocio.
+* **Models:** representam tabelas e relacionamentos.
+
+---
+
+## Variaveis de Ambiente
+
+Exemplo de `.env`:
+
+```env
+PORT=3000
+HOST=localhost
+JWT_SECRET=sua_chave_jwt_segura
+RESEND_API_KEY=re_sua_chave_do_resend
+RESEND_FROM_EMAIL=E-comercio <noreply@seudominio.com>
+```
+
+Observacoes:
+
+* `JWT_SECRET` e obrigatorio. A API nao deve iniciar sem ele.
+* `RESEND_API_KEY` e necessario para envio de codigos por e-mail.
+* `RESEND_FROM_EMAIL` deve usar um dominio verificado no Resend. Se nao for definido, o service usa `onboarding@resend.dev` para testes.
+
+---
+
+## Scripts
+
+```bash
+npm install
+```
+
+```bash
+npm run dev
+```
+
+```bash
+npm start
+```
+
+Para aplicar migrations:
+
+```bash
+npx sequelize-cli db:migrate
+```
+
+Para rodar seeders:
+
+```bash
+npx sequelize-cli db:seed:all
 ```
 
 ---
 
 ## Rotas da API
 
-Abaixo estão os endpoints organizados por recurso, detalhando os métodos HTTP e quem tem permissão para acessá-los.
+Todas as rotas principais sao registradas com o prefixo `/api`.
 
-### Autenticação (Acesso Público)
+### Autenticacao
 
-| Método | Rota | Descrição | Permissão |
+| Metodo | Rota | Status | Descricao |
 | --- | --- | --- | --- |
-| `POST` | `/auth/register` | Cria uma nova conta de usuário. | Público |
-| `POST` | `/auth/login` | Realiza login e retorna o Token JWT. | Público |
-| `POST` | `/auth/forgot-password` | Envia link/código para recuperar a senha. | Público |
-
-### Tickets (Suporte)
-
-| Método | Rota | Descrição | Permissão |
-| --- | --- | --- | --- |
-| `GET` | `/tickets/my` | Lista os tickets abertos pelo próprio usuário. | Usuário |
-| `GET` | `/tickets/all` | Lista todos os tickets do sistema. | Adm, Atendente |
-| `POST` | `/tickets` | Cria um novo ticket de suporte. | Usuário |
-| `POST` | `/tickets/:id/messages` | Envia uma mensagem em um ticket específico. | Todos (envolvidos) |
-| `PUT` | `/tickets/:id/status` | Muda o status (ex: Aberto para Finalizado). | Adm, Atendente |
-| `DELETE` | `/tickets/:id` | Cancela/deleta um ticket. | Adm, Usuário (dono) |
+| `POST` | `/api/auth/register` | Implementada | Cria usuario, valida senha e envia codigo de verificacao por e-mail. |
+| `POST` | `/api/auth/login` | Implementada | Realiza login e retorna JWT se o e-mail estiver verificado. |
+| `POST` | `/api/auth/verify-email` | Implementada | Verifica o e-mail usando codigo de 6 digitos. |
+| `POST` | `/api/auth/resend-verification-code` | Implementada | Reenvia codigo de verificacao respeitando cooldown. |
+| `POST` | `/api/auth/forgot-password` | Implementada | Envia ou reenvia codigo de reset de senha respeitando cooldown. |
+| `POST` | `/api/auth/reset-password` | Implementada | Redefine a senha usando codigo valido. |
 
 ### Produtos
 
-| Método | Rota | Descrição | Permissão |
+| Metodo | Rota | Status | Descricao |
 | --- | --- | --- | --- |
-| `GET` | `/products` | Retorna todos os produtos do catálogo. | Público |
-| `GET` | `/products/:id` | Retorna as informações de um produto específico. | Público |
-| `POST` | `/products` | Adiciona um novo produto ao banco de dados. | Adm |
-| `PUT` | `/products/:id` | Edita as informações de um produto. | Adm |
-| `DELETE` | `/products/:id` | Remove um produto do catálogo. | Adm |
+| `GET` | `/api/products` | Simbolica | Retorna mensagem simbolica de catalogo. |
+| `GET` | `/api/products/:id` | Simbolica | Retorna mensagem simbolica de produto. |
+| `POST` | `/api/products` | Simbolica/protegida | Exige token, mas ainda nao valida role de admin. |
+| `PUT` | `/api/products/:id` | Simbolica/protegida | Exige token, mas ainda nao valida role de admin. |
+| `DELETE` | `/api/products/:id` | Simbolica/protegida | Exige token, mas ainda nao valida role de admin. |
 
-### Informações do Usuário
+### Usuarios
 
-| Método | Rota | Descrição | Permissão |
+| Metodo | Rota | Status | Descricao |
 | --- | --- | --- | --- |
-| `GET` | `/users/profile` | Pega as informações do perfil do usuário logado. | Todos (logados) |
-| `PUT` | `/users/profile` | Edita os dados do próprio perfil. | Todos (logados) |
-| `GET` | `/users/:id` | Pega informações de um usuário específico. | Adm, Atendente |
-| `PUT` | `/users/:id` | Edita as informações ou roles de qualquer usuário. | Adm |
+| `GET` | `/api/users/profile` | Simbolica/protegida | Retorna mensagem simbolica do perfil. |
+| `PUT` | `/api/users/profile` | Simbolica/protegida | Retorna mensagem simbolica de atualizacao. |
+| `GET` | `/api/users/:id` | Simbolica/protegida | Retorna mensagem simbolica de usuario. |
+| `PUT` | `/api/users/:id` | Simbolica/protegida | Retorna mensagem simbolica de alteracao. |
 
-### Compras e Logística
+### Compras
 
-| Método | Rota | Descrição | Permissão |
+| Metodo | Rota | Status | Descricao |
 | --- | --- | --- | --- |
-| `POST` | `/orders` | Realiza a compra de um ou mais produtos. | Usuário |
-| `GET` | `/orders/my` | Lista as compras realizadas pelo usuário logado. | Usuário |
-| `GET` | `/orders/user/:id` | Vê as compras de um usuário específico. | Adm, Atendente |
-| `POST` | `/orders/:id/refund` | Solicita devolução ou reembolso de um pedido. | Adm, Usuário (dono) |
-| `PUT` | `/orders/:id/status` | Atualiza o status da entrega (Enviado, Entregue). | Adm, Atendente |
-| `DELETE` | `/orders/:id` | Cancela o pedido antes do faturamento/envio. | Adm, Usuário (dono) |
+| `POST` | `/api/orders` | Simbolica/protegida | Retorna mensagem simbolica de compra. |
+| `GET` | `/api/orders/my` | Simbolica/protegida | Retorna mensagem simbolica de historico. |
+| `GET` | `/api/orders/user/:id` | Simbolica/protegida | Retorna mensagem simbolica de compras por usuario. |
+| `POST` | `/api/orders/:id/refund` | Simbolica/protegida | Retorna mensagem simbolica de reembolso. |
+| `PUT` | `/api/orders/:id/status` | Simbolica/protegida | Retorna mensagem simbolica de status logistico. |
+| `DELETE` | `/api/orders/:id` | Simbolica/protegida | Retorna mensagem simbolica de cancelamento. |
+
+### Tickets
+
+| Metodo | Rota | Status | Descricao |
+| --- | --- | --- | --- |
+| `GET` | `/api/tickets/my` | Simbolica/protegida | Retorna mensagem simbolica dos tickets do usuario. |
+| `GET` | `/api/tickets/all` | Simbolica/protegida | Retorna mensagem simbolica de todos os tickets. |
+| `POST` | `/api/tickets` | Simbolica/protegida | Retorna mensagem simbolica de criacao de ticket. |
+| `POST` | `/api/tickets/:id/messages` | Simbolica/protegida | Retorna mensagem simbolica de mensagem no ticket. |
+| `PUT` | `/api/tickets/:id/status` | Simbolica/protegida | Retorna mensagem simbolica de alteracao de status. |
+| `DELETE` | `/api/tickets/:id` | Simbolica/protegida | Retorna mensagem simbolica de remocao/cancelamento. |
 
 ---
 
-## Organização do Banco de Dados (Models)
+## Fluxos de Autenticacao
 
-Estrutura das tabelas que serão gerenciadas pelo Sequelize.
+### Cadastro com verificacao de e-mail
 
-| Tabela | Colunas (Atributos) |
+`POST /api/auth/register`
+
+Body:
+
+```json
+{
+  "nome": "Joao",
+  "sobrenome": "Silva",
+  "email": "joao@email.com",
+  "senha": "Senha123!",
+  "endereco": "Rua Exemplo, 123",
+  "cpf": "12345678901",
+  "telefone": "11999999999"
+}
+```
+
+Resultado esperado:
+
+* Usuario e criado com `email_verificado: false`.
+* A senha e salva apenas como hash.
+* Um codigo de 6 digitos e enviado por e-mail.
+* O codigo e salvo no banco apenas como hash.
+
+### Login
+
+`POST /api/auth/login`
+
+Body:
+
+```json
+{
+  "email": "joao@email.com",
+  "senha": "Senha123!"
+}
+```
+
+Se o e-mail estiver verificado, retorna:
+
+```json
+{
+  "success": true,
+  "message": "Login realizado com sucesso!",
+  "data": {
+    "token": "jwt_token",
+    "usuarioId": 1
+  }
+}
+```
+
+Se o e-mail nao estiver verificado, a API nao retorna token:
+
+```json
+{
+  "success": false,
+  "message": "E-mail ainda não verificado. Use o código enviado para seu e-mail.",
+  "requiresEmailVerification": true
+}
+```
+
+Se o codigo antigo tiver expirado, o login tenta enviar um novo codigo automaticamente, respeitando o cooldown.
+
+### Verificar e-mail
+
+`POST /api/auth/verify-email`
+
+Body:
+
+```json
+{
+  "email": "joao@email.com",
+  "codigo": "123456"
+}
+```
+
+### Reenviar codigo de verificacao
+
+`POST /api/auth/resend-verification-code`
+
+Body:
+
+```json
+{
+  "email": "joao@email.com"
+}
+```
+
+Existe cooldown de 60 segundos para evitar spam no Resend.
+
+### Solicitar ou reenviar reset de senha
+
+`POST /api/auth/forgot-password`
+
+Body:
+
+```json
+{
+  "email": "joao@email.com"
+}
+```
+
+Essa rota envia um codigo de reset. Se chamada novamente, gera outro codigo e invalida o anterior, respeitando cooldown de 60 segundos.
+
+### Redefinir senha
+
+`POST /api/auth/reset-password`
+
+Body:
+
+```json
+{
+  "email": "joao@email.com",
+  "codigo": "123456",
+  "novaSenha": "NovaSenha123!"
+}
+```
+
+---
+
+## Regras de Senha
+
+A qualidade da senha e validada em `src/services/password.service.js`.
+
+A senha precisa:
+
+* Ter pelo menos 8 caracteres.
+* Ter pelo menos uma letra maiuscula.
+* Ter pelo menos uma letra minuscula.
+* Ter pelo menos um numero.
+* Ter pelo menos um caractere especial.
+* Nao estar na lista de senhas comuns bloqueadas.
+
+Exemplo aceito:
+
+```text
+Senha123!
+```
+
+Exemplo rejeitado:
+
+```text
+senha123
+```
+
+---
+
+## Banco de Dados
+
+### Tabelas principais
+
+| Tabela | Observacao |
 | --- | --- |
-| **Usuarios** | `ID`, `Nome`, `Sobrenome`, `E-mail`, **`Senha` (Hash Bcrypt)**, `Role_ID` (FK), `Endereco`, `Cpf`, `Telefone` |
-| **Roles** | `ID`, `Nome` |
-| **Produtos** | `ID`, `Nome`, `Descricao`, `Preco`, `Quantidade` (Estoque), `Categoria`, `Avaliacao` |
-| **Formas_Pagamento** | `ID`, `Nome` *(Ex: Cartão de Crédito, Pix, Boleto)* |
-| **Formas_Entrega** | `ID`, `Nome`, `Valor_Fixo_Frete` *(Ex: Sedex, PAC, Retirada)* |
-| **Compras** | `ID`, `Nome`, `Endereco_Entrega`, `Preco_Total`, `Usuario_ID` (FK), `Status`, **`Forma_Pagamento_ID` (FK)**, **`Forma_Entrega_ID` (FK)** |
-| **Tickets** | `ID`, `Titulo`, `Status`, `Data_Inicializacao`, `Data_Finalizacao`, `Usuario_ID` (FK), `Atendente_ID` (FK) |
-| **Mensagens** | `ID`, `Mensagem`, `Imagem_URL`, `Ticket_ID` (FK), `Usuario_ID` (FK) |
+| `Usuarios` | Dados do usuario, senha em hash, role, reset de senha e verificacao de e-mail. |
+| `Roles` | Perfis de acesso. |
+| `Produtos` | Catalogo de produtos. |
+| `FormaPagamentos` | Formas de pagamento. |
+| `FormaEntregas` | Formas de entrega e valor fixo de frete. |
+| `Compras` | Pedido/compra do usuario. Ainda nao possui tabela de itens. |
+| `Tickets` | Tickets de suporte. |
+| `Mensagens` | Mensagens vinculadas aos tickets. |
+
+### Campos importantes em Usuarios
+
+| Campo | Uso |
+| --- | --- |
+| `senha` | Hash bcrypt da senha. |
+| `email_verificado` | Indica se o e-mail ja foi confirmado. |
+| `email_verificacao_codigo_hash` | Hash do codigo de verificacao de e-mail. |
+| `email_verificacao_expira_em` | Data/hora de expiracao do codigo de verificacao. |
+| `email_verificacao_enviado_em` | Data/hora do ultimo envio de codigo de verificacao. |
+| `reset_senha_codigo_hash` | Hash do codigo de reset de senha. |
+| `reset_senha_expira_em` | Data/hora de expiracao do codigo de reset. |
+| `reset_senha_enviado_em` | Data/hora do ultimo envio de codigo de reset. |
+
+### Relacionamentos atuais
+
+* `Role` possui muitos `Usuario`.
+* `Usuario` pertence a uma `Role`.
+* `Usuario` possui muitas `Compra`.
+* `Compra` pertence a um `Usuario`.
+* `Compra` pertence a uma `FormaPagamento`.
+* `Compra` pertence a uma `FormaEntrega`.
+* `Usuario` possui muitos `Ticket` como cliente.
+* `Usuario` possui muitos `Ticket` como atendente.
+* `Ticket` possui muitas `Mensagem`.
+* `Mensagem` pertence a um `Ticket`.
+* `Mensagem` pertence a um `Usuario`.
 
 ---
 
-## Relacionamentos entre as Tabelas
+## Padrao de Resposta
 
-A API utiliza relacionamentos definidos através do Sequelize para garantir a integridade dos dados.
-
-### Roles -> Usuários
-
-Uma Role pode estar associada a vários usuários.
-
-```javascript
-// Relacionamento com Usuários
-Role.hasMany(User, { foreignKey: "Role_ID" });
-User.belongsTo(Role, { foreignKey: "Role_ID" });
-
-```
-
-**Relacionamento:** `1:N`
-
-```text
-Role
- └── Usuarios
-
-```
-
----
-
-### Usuários e Compras
-
-Um usuário pode realizar várias compras.
-
-```javascript
-User.hasMany(Order, { foreignKey: "Usuario_ID" });
-Order.belongsTo(User, { foreignKey: "Usuario_ID" });
-
-```
-
-**Relacionamento:** `1:N`
-
-```text
-Usuario
- └── Compras
-
-```
-
----
-
-### Logística e Finanças das Compras (Dinâmico via Tabelas)
-
-Para maior versatilidade do sistema, os métodos de pagamento e envio são entidades independentes criadas dinamicamente. Uma forma de pagamento ou entrega pode estar presente em várias compras.
-
-```javascript
-// Formas de Pagamento
-FormaPagamento.hasMany(Order, { foreignKey: "Forma_Pagamento_ID" });
-Order.belongsTo(FormaPagamento, { foreignKey: "Forma_Pagamento_ID" });
-
-// Formas de Entrega
-FormaEntrega.hasMany(Order, { foreignKey: "Forma_Entrega_ID" });
-Order.belongsTo(FormaEntrega, { foreignKey: "Forma_Entrega_ID" });
-
-```
-
-**Relacionamento:** `1:N`
-
-```text
-Formas_Pagamento ──┐
-                   ├──> Compras
-Formas_Entrega ────┘
-
-```
-
----
-
-### Usuários e Tickets
-
-Um usuário pode abrir diversos tickets.
-
-```javascript
-User.hasMany(Ticket, { foreignKey: "Usuario_ID" });
-Ticket.belongsTo(User, { foreignKey: "Usuario_ID" });
-
-```
-
-**Relacionamento:** `1:N`
-
-```text
-Usuario
- └── Tickets
-
-```
-
----
-
-### Tickets e Mensagens
-
-Um ticket pode conter várias mensagens.
-
-```javascript
-Ticket.hasMany(Message, { foreignKey: "Ticket_ID" });
-Message.belongsTo(Ticket, { foreignKey: "Ticket_ID" });
-
-```
-
-**Relacionamento:** `1:N`
-
-```text
-Ticket
- └── Mensagens
-
-```
-
----
-
-### Usuários e Mensagens
-
-Um usuário pode enviar diversas mensagens dentro dos tickets.
-
-```javascript
-User.hasMany(Message, { foreignKey: "Usuario_ID" });
-Message.belongsTo(User, { foreignKey: "Usuario_ID" });
-
-```
-
-**Relacionamento:** `1:N`
-
-```text
-Usuario
- └── Mensagens
-
-```
-
----
-
-### Diagrama Geral 
-
-```text
-Roles
- ├── Permissoes
- └── Usuarios
-      ├── Tickets
-      │    └── Mensagens
-      ├── Mensagens
-      └── Compras
-           ├── Formas_Pagamento (Dinâmico)
-           └── Formas_Entrega (Dinâmico)
-
-```
-
----
-
-## Estrutura Padrão de Resposta da API
-
-Todas as respostas seguem um padrão para facilitar a integração com aplicações front-end.
-
-### Resposta de Sucesso
+### Sucesso
 
 ```json
 {
-    "success": true,
-    "message": "Operação realizada com sucesso.",
-    "data": {}
+  "success": true,
+  "message": "Operação realizada com sucesso.",
+  "data": {}
 }
 ```
 
-### Resposta de Erro
+### Erro
 
 ```json
 {
-    "success": false,
-    "message": "Descrição do erro.",
-    "errors": []
+  "success": false,
+  "message": "Descrição do erro."
+}
+```
+
+Alguns erros tambem podem retornar campos extras, como:
+
+```json
+{
+  "success": false,
+  "message": "Aguarde 42 segundos antes de solicitar um novo código.",
+  "retryAfterSeconds": 42
 }
 ```
 
 ---
 
-## Exemplos de Resposta por Endpoint
+## Codigos HTTP Utilizados
 
-### POST /auth/register
-
-**Resposta**
-
-```json
-{
-    "success": true,
-    "message": "Usuário criado com sucesso.",
-    "data": {
-        "id": 1,
-        "nome": "João",
-        "email": "joao@email.com"
-    }
-}
-```
+| Codigo | Significado |
+| --- | --- |
+| `200` | Operacao realizada com sucesso. |
+| `201` | Recurso criado com sucesso. |
+| `400` | Dados invalidos, codigo invalido ou regra de negocio rejeitada. |
+| `401` | Credenciais invalidas ou usuario nao autenticado. |
+| `403` | Acesso bloqueado, como e-mail ainda nao verificado. |
+| `404` | Recurso ou conta nao encontrada. |
+| `409` | Conflito de dados, como e-mail ou CPF duplicado. |
+| `429` | Muitas solicitacoes, usado no cooldown de reenvio de codigos. |
+| `500` | Erro interno do servidor. |
 
 ---
 
-### POST /auth/login
+## Stack
 
-**Resposta**
+* `express`
+* `sequelize`
+* `sqlite3`
+* `mysql2`
+* `bcryptjs`
+* `jsonwebtoken`
+* `dotenv`
+* `cors`
+* `joi`
 
-```json
-{
-    "success": true,
-    "message": "Login realizado com sucesso.",
-    "data": {
-        "token": "jwt_token",
-        "user": {
-            "id": 1,
-            "nome": "João",
-            "role": "Usuario"
-        }
-    }
-}
-```
+O envio de e-mails usa a API HTTP do Resend por meio do `fetch` nativo do Node.js, sem SDK adicional instalado.
 
 ---
 
-### GET /users/profile
+## Pontos de Evolucao
 
-**Resposta**
-
-```json
-{
-    "success": true,
-    "data": {
-        "id": 1,
-        "nome": "João",
-        "sobrenome": "Silva",
-        "email": "joao@email.com",
-        "telefone": "(11) 99999-9999"
-    }
-}
-```
-
----
-
-### GET /products
-
-**Resposta**
-
-```json
-{
-    "success": true,
-    "data": [
-        {
-            "id": 1,
-            "nome": "Notebook",
-            "preco": 3500,
-            "quantidade": 10
-        }
-    ]
-}
-```
-
----
-
-### POST /tickets
-
-**Resposta**
-
-```json
-{
-    "success": true,
-    "message": "Ticket criado com sucesso.",
-    "data": {
-        "id": 15,
-        "titulo": "Problema na entrega",
-        "status": "ABERTO"
-    }
-}
-```
-
----
-
-### POST /orders
-
-**Resposta**
-
-```json
-{
-    "success": true,
-    "message": "Pedido criado com sucesso.",
-    "data": {
-        "id": 25,
-        "status": "PENDENTE",
-        "precoTotal": 499.90
-    }
-}
-```
-
----
-
-## Códigos HTTP Utilizados
-
-| Código | Significado                    |
-| ------ | ------------------------------ |
-| 200    | Operação realizada com sucesso |
-| 201    | Recurso criado com sucesso     |
-| 400    | Dados inválidos                |
-| 401    | Não autenticado                |
-| 403    | Sem permissão                  |
-| 404    | Recurso não encontrado         |
-| 409    | Conflito de dados              |
-| 500    | Erro interno do servidor       |
-
-```
-```
----
-
-## Stack e Bibliotecas Adicionais
-
-Para o perfeito funcionamento da API, as seguintes bibliotecas do ecossistema Node.js são recomendadas:
-
-* **Framework e Banco de Dados:** `express`, `sequelize`, `sqlite3`.
-* **Segurança e Autenticação:** `jsonwebtoken` (para os tokens de sessão), `bcryptjs` (para hash de senhas).
-* **Utilitários:** `dotenv` (para gerenciar variáveis de ambiente), `cors` (para permitir integração com o front-end).
-* **Validação de Dados:** `joi` (para validar corpos das requisições).
-* **Upload de Arquivos (Opcional):** `multer` (para imagens dos produtos e anexos de tickets).
-
----
-
-> **Segurança de Senhas:** A coluna `Senha` armazena exclusivamente o hash da senha gerado pelo `bcryptjs`. Em nenhum momento a senha original do usuário é salva no banco de dados, garantindo maior segurança e conformidade com boas práticas de autenticação.
+* Implementar controllers e services reais para produtos, usuarios, compras e tickets.
+* Criar middleware de autorizacao por role.
+* Criar tabela de itens da compra para suportar multiplos produtos por pedido.
+* Adicionar testes automatizados para autenticacao, reset de senha e verificacao de e-mail.
+* Melhorar seguranca contra abuso com rate limit por IP alem do cooldown por usuario.

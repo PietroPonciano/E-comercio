@@ -8,6 +8,11 @@ const registrarRotas = require('./src/routes');
 
 const app = express();
 
+if (!process.env.JWT_SECRET) {
+  console.error("JWT_SECRET não configurado.");
+  process.exit(1);
+}
+
 // Middlewares
 app.use(cors());
 app.use(express.json());

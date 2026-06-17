@@ -19,7 +19,7 @@ const verificarToken = (req, res, next) => {
 
     try {
         // 2. Verifica se o token é válido usando a sua chave secreta
-        const verificado = jwt.verify(token, process.env.JWT_SECRET || 'chave_segurança_padrao_local');
+        const verificado = jwt.verify(token, process.env.JWT_SECRET);
         
         // 3. Injeta os dados do usuário dentro da requisição (req.usuario)
         // Assim, qualquer controller da rota protegida saberá QUEM está logado (id e role_id)
