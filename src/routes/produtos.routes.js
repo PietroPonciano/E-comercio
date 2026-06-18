@@ -3,28 +3,30 @@ const express = require('express');
 const router = express.Router();
 
 const verificarToken = require('../middlewares/auth.middleware');
+const { verificarAdmin } = require('../middlewares/role.middleware');
+const validate = require('../middlewares/validate.middleware');
+const ProdutoController = require('../controllers/produtos.controller');
+const { createProdutoSchema, updateProdutoSchema } = require('../schemas/produto.schema');
 
-router.get('/', (req, res) => {
-    res.status(200).json({ success: true, message: "Simbólico: Catálogo de produtos retornado." });
-});
+const validarIdNumerico = (req, res, next) => {
+    if (!/^[0-9]+$/.test(req.params.id)) {
+        return res.status(400).json({
+            success: false,
+            message: "ID de produto inválido."
+        });
+    }
 
-router.get('/:id', (req, res) => {
-    const { id } = req.params;
-    res.status(200).json({ success: true, message: `Simbólico: Informações do produto #${id}.` });
-});
+    next();
+};
 
-router.post('/', verificarToken,(req, res) => {
-    res.status(201).json({ success: true, message: "Simbólico: Produto adicionado ao catálogo (Acesso restrito)." });
-});
+router.get('/', ProdutoController.list);
 
-router.put('/:id', verificarToken,(req, res) => {
-    const { id } = req.params;
-    res.status(200).json({ success: true, message: `Simbólico: Produto #${id} editado com sucesso.` });
-});
+router.get('/:id', validarIdNumerico, ProdutoController.getById);
 
-router.delete('/:id', verificarToken,(req, res) => {
-    const { id } = req.params;
-    res.status(200).json({ success: true, message: `Simbólico: Produto #${id} removido do catálogo.` });
-});
+router.post('/', verificarToken, verificarAdmin, validate(createProdutoSchema), ProdutoController.create);
+
+router.put('/:id', verificarToken, validarIdNumerico, verificarAdmin, validate(updateProdutoSchema), ProdutoController.update);
+
+router.delete('/:id', verificarToken, validarIdNumerico, verificarAdmin, ProdutoController.remove);
 
 module.exports = router;

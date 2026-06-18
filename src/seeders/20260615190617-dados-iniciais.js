@@ -24,14 +24,20 @@ module.exports = {
       { id: 3, nome: 'Retirada na Loja', valor_fixo_frete: 0.00, createdAt: new Date(), updatedAt: new Date() }
     ], {});
 
-    // 4. PRODUTOS (Catálogo de teste com preços e estoques válidos)
-    await queryInterface.bulkInsert('Produtos', [
-      { id: 1, nome: 'Teclado Mecânico RGB', descricao: 'Teclado switch blue com anti-ghosting', preco: 249.90, quantidade: 15, categoria: 'Periféricos', avaliacao: 4.80, createdAt: new Date(), updatedAt: new Date() },
-      { id: 2, nome: 'Mouse Gamer 12000 DPI', descricao: 'Mouse ergonômico com pesos reguláveis', preco: 129.00, quantidade: 30, categoria: 'Periféricos', avaliacao: 4.50, createdAt: new Date(), updatedAt: new Date() },
-      { id: 3, nome: 'Monitor 144Hz IPS', descricao: 'Monitor 24 polegadas full HD para jogos', preco: 1199.00, quantidade: 8, categoria: 'Monitores', avaliacao: 4.90, createdAt: new Date(), updatedAt: new Date() }
+    // 4. CATEGORIAS
+    await queryInterface.bulkInsert('Categorias', [
+      { id: 1, nome: 'Periféricos', descricao: 'Acessórios e periféricos para computadores', createdAt: new Date(), updatedAt: new Date() },
+      { id: 2, nome: 'Monitores', descricao: 'Telas e monitores para computadores', createdAt: new Date(), updatedAt: new Date() }
     ], {});
 
-    // 5. USUÁRIOS (Senhas em hash real usando Bcrypt para 'senha123')
+    // 5. PRODUTOS (Catálogo de teste com preços e estoques válidos)
+    await queryInterface.bulkInsert('Produtos', [
+      { id: 1, nome: 'Teclado Mecânico RGB', descricao: 'Teclado switch blue com anti-ghosting', preco: 249.90, quantidade: 15, categoria_id: 1, avaliacao: 4.80, ativo: true, createdAt: new Date(), updatedAt: new Date() },
+      { id: 2, nome: 'Mouse Gamer 12000 DPI', descricao: 'Mouse ergonômico com pesos reguláveis', preco: 129.00, quantidade: 30, categoria_id: 1, avaliacao: 4.50, ativo: true, createdAt: new Date(), updatedAt: new Date() },
+      { id: 3, nome: 'Monitor 144Hz IPS', descricao: 'Monitor 24 polegadas full HD para jogos', preco: 1199.00, quantidade: 8, categoria_id: 2, avaliacao: 4.90, ativo: true, createdAt: new Date(), updatedAt: new Date() }
+    ], {});
+
+    // 6. USUÁRIOS (Senhas em hash real usando Bcrypt para 'senha123')
     // SEGURANÇA: Nunca coloque senhas em texto limpo no banco, nem mesmo em seeders de teste!
     const senhaHashDemo = '$2a$12$R9h/lS7ZvvS8y6u6D6A8XOxIcGxI0V.g7pC2pE/yYwG6vGZ9y7G6.'; 
     
@@ -41,18 +47,18 @@ module.exports = {
       { id: 3, nome: 'Ana', sobrenome: 'Silva', email: 'cliente@email.com', senha: senhaHashDemo, endereco: 'Alameda Green, 789', cpf: '333.333.333-33', telefone: '(11) 99999-3333', role_id: 3, createdAt: new Date(), updatedAt: new Date() }
     ], {});
 
-    // 6. TICKETS (Chamados de suporte abertos)
+    // 7. TICKETS (Chamados de suporte abertos)
     await queryInterface.bulkInsert('Tickets', [
       { id: 1, titulo: 'Problema com a entrega do Monitor', status: 'em_atendimento', data_inicializacao: new Date(), usuario_id: 3, atendente_id: 2, createdAt: new Date(), updatedAt: new Date() }
     ], {});
 
-    // 7. MENSAGENS (Histórico do chat interno do ticket 1)
+    // 8. MENSAGENS (Histórico do chat interno do ticket 1)
     await queryInterface.bulkInsert('Mensagens', [
       { id: 1, mensagem: 'Olá, meu monitor ainda não chegou e o prazo expirou.', imagem_url: null, ticket_id: 1, usuario_id: 3, createdAt: new Date(), updatedAt: new Date() },
       { id: 2, mensagem: 'Olá Ana, vou verificar com a transportadora agora mesmo.', imagem_url: null, ticket_id: 1, usuario_id: 2, createdAt: new Date(), updatedAt: new Date() }
     ], {});
 
-    // 8. COMPRAS (Histórico de vendas simulado)
+    // 9. COMPRAS (Histórico de vendas simulado)
     await queryInterface.bulkInsert('Compras', [
       { id: 1, nome: 'Pedido #001', endereco_entrega: 'Alameda Green, 789', preco_total: 393.90, status: 'pago', usuario_id: 3, forma_pagamento_id: 1, forma_entrega_id: 1, createdAt: new Date(), updatedAt: new Date() }
     ], {});
@@ -66,6 +72,7 @@ module.exports = {
     await queryInterface.bulkDelete('Tickets', null, {});
     await queryInterface.bulkDelete('Usuarios', null, {});
     await queryInterface.bulkDelete('Produtos', null, {});
+    await queryInterface.bulkDelete('Categorias', null, {});
     await queryInterface.bulkDelete('FormaEntregas', null, {});
     await queryInterface.bulkDelete('FormaPagamentos', null, {});
     await queryInterface.bulkDelete('Roles', null, {});

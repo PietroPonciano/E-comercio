@@ -3,23 +3,28 @@ const express = require('express');
 const router = express.Router();
 
 const verificarToken = require('../middlewares/auth.middleware');
+const { verificarAdmin, verificarSuporte } = require('../middlewares/role.middleware');
+const validate = require('../middlewares/validate.middleware');
+const UsuarioController = require('../controllers/usuario.controller');
+const { updateProfileSchema, updateUserSchema } = require('../schemas/usuario.schema');
 
-router.get('/profile', verificarToken, (req, res) => {
-    res.status(200).json({ success: true, message: "Simbólico: Dados do seu perfil pessoal." });
-});
+const validarIdNumerico = (req, res, next) => {
+    if (!/^[0-9]+$/.test(req.params.id)) {
+        return res.status(400).json({
+            success: false,
+            message: "ID de usuário inválido."
+        });
+    }
 
-router.put('/profile', verificarToken, (req, res) => {
-    res.status(200).json({ success: true, message: "Simbólico: Seu perfil foi atualizado." });
-});
+    next();
+};
 
-router.get('/:id', verificarToken, (req, res) => {
-    const { id } = req.params;
-    res.status(200).json({ success: true, message: `Simbólico: Perfil do usuário #${id} (Acesso restrito).` });
-});
+router.get('/profile', verificarToken, UsuarioController.getProfile);
 
-router.put('/:id', verificarToken, (req, res) => {
-    const { id } = req.params;
-    res.status(200).json({ success: true, message: `Simbólico: Informações/Roles do usuário #${id} alteradas.` });
-});
+router.put('/profile', verificarToken, validate(updateProfileSchema), UsuarioController.updateProfile);
+
+router.get('/:id', verificarToken, validarIdNumerico, verificarSuporte, UsuarioController.getUserById);
+
+router.put('/:id', verificarToken, validarIdNumerico, verificarAdmin, validate(updateUserSchema), UsuarioController.updateUserById);
 
 module.exports = router;
