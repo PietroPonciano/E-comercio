@@ -1,35 +1,36 @@
 'use strict';
+
 const express = require('express');
 const router = express.Router();
 
 const verificarToken = require('../middlewares/auth.middleware');
 const { verificarSuporte } = require('../middlewares/role.middleware');
+const validarIdNumerico = require('../utils/validarIdNumerico')
 
-router.get('/my', verificarToken, (req, res) => {
-    res.status(200).json({ success: true, message: "Simbólico: Lista dos seus tickets abertos." });
-});
+const TicketController = require('../controllers/ticket.controller');
 
-router.get('/all', verificarToken, verificarSuporte, (req, res) => {
-    res.status(200).json({ success: true, message: "Simbólico: Lista de todos os tickets do sistema (Acesso restrito)." });
-});
+// Listar tickets do próprio usuário autenticado
+router.get('/my', verificarToken, TicketController.getMyTickets);
 
-router.post('/', verificarToken, (req, res) => {
-    res.status(201).json({ success: true, message: "Simbólico: Ticket de suporte criado." });
-});
+// Listar todos os tickets do sistema (Acesso restrito ao suporte)
+router.get('/all', verificarToken, verificarSuporte, TicketController.getAllTickets);
 
-router.post('/:id/messages', verificarToken, (req, res) => {
-    const { id } = req.params;
-    res.status(201).json({ success: true, message: `Simbólico: Mensagem enviada no ticket #${id}.` });
-});
+// Detalhes completos de um ticket específico
+router.get('/:id', verificarToken, validarIdNumerico, verificarSuporte, TicketController.getById);
 
-router.put('/:id/status', verificarToken, verificarSuporte, (req, res) => {
-    const { id } = req.params;
-    res.status(200).json({ success: true, message: `Simbólico: Status do ticket #${id} atualizado.` });
-});
+// Criar um novo ticket
+router.post('/', verificarToken, TicketController.create);
 
-router.delete('/:id', verificarToken, (req, res) => {
-    const { id } = req.params;
-    res.status(200).json({ success: true, message: `Simbólico: Ticket #${id} cancelado/deletado.` });
-});
+// Adicionar mensagem a um ticket existente
+router.post('/:id/messages', verificarToken, validarIdNumerico, TicketController.addMessage);
+
+// Suporte assume um ticket
+router.post('/:id', verificarToken, verificarSuporte, validarIdNumerico, TicketController.assignTicket);
+
+// Alterar o status do ticket (Acesso restrito ao suporte)
+router.put('/:id/status', verificarToken, verificarSuporte, validarIdNumerico, TicketController.updateStatus);
+
+// Excluir um ticket
+router.delete('/:id', verificarToken, validarIdNumerico, TicketController.remove);
 
 module.exports = router;

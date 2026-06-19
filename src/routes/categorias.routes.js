@@ -2,20 +2,22 @@
 const express = require('express');
 const router = express.Router();
 
+// Middlewares obrigatórios
 const verificarToken = require('../middlewares/auth.middleware');
 const { verificarAdmin } = require('../middlewares/role.middleware');
+const validarIdNumerico = require('../utils/validarIdNumerico')
 
-router.get('/', (req, res) => {
-    res.status(200).json({ success: true, message: "Simbólico: Lista de categorias retornada." });
-});
+// Controller
+const CategoriaController = require('../controllers/categoria.controller');
 
-router.post('/', verificarToken, verificarAdmin, (req, res) => {
-    res.status(201).json({ success: true, message: "Simbólico: Categoria criada com sucesso." });
-});
+// Todas as rotas agora possuem verificarToken, verificarAdmin e seu respectivo controller
+router.get('/', verificarToken, verificarAdmin, CategoriaController.list);
 
-router.put('/:id', verificarToken, verificarAdmin, (req, res) => {
-    const { id } = req.params;
-    res.status(200).json({ success: true, message: `Simbólico: Categoria #${id} editada com sucesso.` });
-});
+router.post('/', verificarToken, verificarAdmin, CategoriaController.create);
+
+// Rotas com parâmetros numéricos recebem o middleware validarIdNumerico
+router.put('/:id', verificarToken, verificarAdmin, validarIdNumerico, CategoriaController.update);
+
+router.delete('/:id', verificarToken, verificarAdmin,  validarIdNumerico, CategoriaController.remove);
 
 module.exports = router;

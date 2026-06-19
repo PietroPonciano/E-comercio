@@ -7,17 +7,8 @@ const { verificarAdmin } = require('../middlewares/role.middleware');
 const validate = require('../middlewares/validate.middleware');
 const ProdutoController = require('../controllers/produtos.controller');
 const { createProdutoSchema, updateProdutoSchema } = require('../schemas/produto.schema');
+const validarIdNumerico = require('../utils/validarIdNumerico')
 
-const validarIdNumerico = (req, res, next) => {
-    if (!/^[0-9]+$/.test(req.params.id)) {
-        return res.status(400).json({
-            success: false,
-            message: "ID de produto inválido."
-        });
-    }
-
-    next();
-};
 
 router.get('/', ProdutoController.list);
 

@@ -7,17 +7,10 @@ const { verificarAdmin, verificarSuporte } = require('../middlewares/role.middle
 const validate = require('../middlewares/validate.middleware');
 const UsuarioController = require('../controllers/usuario.controller');
 const { updateProfileSchema, updateUserSchema } = require('../schemas/usuario.schema');
+const validarIdNumerico = require('../utils/validarIdNumerico')
 
-const validarIdNumerico = (req, res, next) => {
-    if (!/^[0-9]+$/.test(req.params.id)) {
-        return res.status(400).json({
-            success: false,
-            message: "ID de usuário inválido."
-        });
-    }
 
-    next();
-};
+
 
 router.get('/profile', verificarToken, UsuarioController.getProfile);
 
