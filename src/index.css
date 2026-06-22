@@ -1,4 +1,44 @@
+:root {
+  
+  --primary: #4f46e5;
+  --secondary: #10b981;
+  --accent: #f59e0b;
+
+
+  --background: #0f172a;
+  --surface: #1e293b;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+
+ 
+  --border-radius: 8px;
+
+  
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #facc15;
+
+ 
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-title: "Poppins", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+}
+
 *{
   margin: 0px;
   padding: 0px;
 }
+
+/* Animação de entrada da Navbar ao carregar a página */
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+

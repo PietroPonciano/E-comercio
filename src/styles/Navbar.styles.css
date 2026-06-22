@@ -1,0 +1,114 @@
+/* Ajustes gerais e fontes */
+.elementos-nav {
+    font-family: var(--font-title);
+    padding: 10px 20px;
+    background-color: transparent; /* Mude se precisar de fundo sólido */
+}
+
+/* Aplicando as variáveis de cor */
+header, 
+.nav-link, 
+.navbar-brand h2, 
+.separator {
+    color: var(--primary) !important; 
+}
+
+/* O !important no .nav-link ajuda a sobrescrever o cinza padrão do Bootstrap */
+.nav-link:hover {
+    opacity: 0.8;
+}
+
+/* Container do Logo */
+.elemento-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.elemento-logo h2 {
+    margin: 0; /* Tira a margem inferior padrão dos <h2> no Bootstrap */
+    font-size: 1.5rem;
+}
+
+.logo {
+    color: var(--accent);
+}
+
+/* Alinhamento dos itens da navbar */
+.nav-links-container {
+    align-items: center;
+    gap: 10px;
+}
+
+/* Bloco de Autenticação */
+.auth-links {
+    display: flex;
+    align-items: center;
+}
+
+/* Botão de Logout para ter cara de Link */
+.btn-logout {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+
+@media (max-width: 991px) {
+    .nav-links-container {
+        align-items: flex-start; /* Alinha os links à esquerda no mobile */
+        margin-top: 15px;
+    }
+    
+    .auth-links {
+        flex-direction: column; /* Empilha Login e Register no celular */
+        align-items: flex-start;
+    }
+    
+    .nav-link {
+        padding: 10px 0; /* Dá mais espaço de toque para os links no mobile */
+    }
+}
+
+
+/* Animacoes */
+
+
+/* Prepara o link para receber o pseudo-elemento */
+.nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+    width: fit-content; /* Garante que a linha acompanhe o tamanho do texto no mobile */
+}
+
+/* Cria a linha invisível embaixo do texto */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 5px; /* Ajuste se a linha ficar muito perto do texto */
+    left: 0;
+    background-color: var(--accent); /* Usa a sua cor de destaque */
+    transition: width 0.3s ease-in-out;
+}
+
+/* Faz a linha crescer ao passar o mouse */
+.nav-link:hover::after {
+    width: 100%;
+}
+
+@keyframes pulseSoft {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.1) rotate(-5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+.elemento-logo:hover .logo {
+    animation: pulseSoft 0.6s ease-in-out;
+}
+
+header{
+  animation: slideDown 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
