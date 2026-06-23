@@ -1,0 +1,157 @@
+.secao-produtos {
+  position: relative;
+  margin-top: -30px; 
+  padding-top: 50px; 
+  background: linear-gradient(
+    to bottom, 
+    transparent 0px, 
+    var(--background) 5px, 
+    var(--background-produtos, #ffffff) 8%
+  );
+  z-index: 2; 
+}
+
+.secao-produtos h1 {
+  margin: 20px 30px;
+  font-family: var(--font-title);
+}
+
+/* CORRIGIDO: Removido width 100% para evitar scroll horizontal e adicionado max-width */
+.produtos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  margin: 0 auto;
+  max-width: 1400px;
+  gap: 20px; 
+  padding: 20px 30px;
+}
+
+@media (min-width: 1200px) {
+  .produtos-grid {
+    grid-template-columns: repeat(5, 1fr); 
+  }
+}
+
+/* NOVO: Garante que as imagens fiquem padronizadas e centralizadas */
+.product-image-container {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.product-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Mantém a proporção da imagem sem distorcer */
+}
+
+.produto-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff; 
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.produto-card:hover {
+  transform: translateY(-5px); 
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+.produto-card h5 {
+  margin: 8px 0;
+  font-size: 1.1rem;
+}
+
+/* NOVO: Faz a descrição ocupar o espaço restante, empurrando o preço para a base */
+.produto-card p {
+  font-size: 0.9rem;
+  color: #666;
+  flex-grow: 1; 
+  margin-bottom: 16px;
+}
+
+.preco {
+  font-size: 1.5rem;
+  font-family: var(--font-title);
+  font-weight: bold;
+  color: #333;
+  margin-top: auto; /* Força o preço a ficar no final do card */
+}
+
+/* NOVO: Estilização da paginação */
+.paginacao-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin: 40px 0;
+}
+
+.paginacao-container button {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.paginacao-container button:hover:not(:disabled) {
+  background-color: #f0f0f0;
+  border-color: #999;
+}
+
+.paginacao-container button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.paginacao-container span {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+@keyframes girar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icone {
+  animation: girar 2s linear infinite;
+}
+
+.loading{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+  color: var(--background);
+}
+
+
+/* estado vazio ocupa a área inteira */
+.texto-nenhum {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 0;
+  color: #6b7280;
+  text-align: center;
+  gap: 8px;
+}

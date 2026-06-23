@@ -1,69 +1,22 @@
-import { useState } from "react";
-import { useProducts } from "../hooks/useProducts.js";
-import { ImageOff } from "lucide-react"
+import React from "react";
+import Carrossel from "../components/Carrossel.jsx";
+import ListaProdutos from "../components/ListaProdutos.jsx";
+
 
 export default function Home() {
-    const [page, setPage] = useState(1);
-    const { data, isLoading, isFetching } = useProducts(page);
+  const minhasImagens = [
+    'https://i0.wp.com/dkmidiadigital.com.br/wp-content/uploads/2023/03/OFERTAS-DA-SEMANA.png?fit=1920%2C1080&ssl=1',
+    'https://blog.redelease.com.br/wp-content/uploads/2025/09/Red-Comic-Cartoon-Style-Sale-Discount-Instagram-Post-1920-x-1080-px.png',
+    'https://clubeag.com/wp-content/uploads/2026/03/Banners-Clube-AG_20260302_174404_0000.jpg'
+  ];
 
-    if (isLoading) return <p>Carregando primeira página...</p>;
-
-
-    const produtos = data?.data || [];
-    const totalPaginas = data?.pagination?.totalPages || 1;
-
-    return (
-        <div>
-            <h1>Produtos {isFetching && "..."}</h1>
-
-            <div>
-                {produtos.length === 0 ? (
-                    <p>Nenhum produto encontrado nesta página.</p>
-                ) : (
-                    produtos.map((product) => (
-                        <div key={product.id} >
-
-                            {/* Renderização Condicional da Imagem */}
-                            <div className="product-image-container">
-                                {product.imagem_url ? (
-                                    <img
-                                        src={product.imagem_url}
-                                        alt={product.nome}
-                                        style={{ maxWidth: "100%", maxHeight: "100%" }}
-                                    />
-                                ) : (
-                                    <ImageOff size={48} color="#999" />
-                                )}
-                            </div>
-
-                            <h3>{product.nome}</h3>
-                            <p>{product.descricao}</p>
-                            <p><strong>Preço:</strong> R$ {product.preco.toFixed(2)}</p>
-                            <p><strong>Categoria:</strong> {product.categoria.nome}</p>
-                        </div>
-                    ))
-                )}
-            </div>
-
-            <div>
-                <button
-                    disabled={page === 1}
-                    onClick={() => setPage((old) => Math.max(old - 1, 1))}
-                >
-                    Anterior
-                </button>
-
-                <span>
-                    Página {page} de {totalPaginas}
-                </span>
-
-                <button
-                    disabled={page >= totalPaginas}
-                    onClick={() => setPage((old) => old + 1)}
-                >
-                    Próxima
-                </button>
-            </div>
-        </div>
-    );
+  return (
+    <div className="pagina-home">
+      
+      <Carrossel imagens={minhasImagens} />
+      
+    
+      <ListaProdutos />
+    </div>
+  );
 }

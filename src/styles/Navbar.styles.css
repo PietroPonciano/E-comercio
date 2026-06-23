@@ -2,7 +2,7 @@
 .elementos-nav {
     font-family: var(--font-title);
     padding: 10px 20px;
-    background-color: transparent; /* Mude se precisar de fundo sólido */
+    background-color: var(--background); 
 }
 
 /* Aplicando as variáveis de cor */
@@ -10,10 +10,10 @@ header,
 .nav-link, 
 .navbar-brand h2, 
 .separator {
-    color: var(--primary) !important; 
+    color: var(--text) !important; 
 }
 
-/* O !important no .nav-link ajuda a sobrescrever o cinza padrão do Bootstrap */
+
 .nav-link:hover {
     opacity: 0.8;
 }
@@ -27,7 +27,7 @@ header,
 }
 
 .elemento-logo h2 {
-    margin: 0; /* Tira a margem inferior padrão dos <h2> no Bootstrap */
+    margin: 0; 
     font-size: 1.5rem;
 }
 
@@ -57,17 +57,17 @@ header,
 
 @media (max-width: 991px) {
     .nav-links-container {
-        align-items: flex-start; /* Alinha os links à esquerda no mobile */
+        align-items: flex-start; 
         margin-top: 15px;
     }
     
     .auth-links {
-        flex-direction: column; /* Empilha Login e Register no celular */
+        flex-direction: column; 
         align-items: flex-start;
     }
     
     .nav-link {
-        padding: 10px 0; /* Dá mais espaço de toque para os links no mobile */
+        padding: 10px 0; 
     }
 }
 

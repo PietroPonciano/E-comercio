@@ -1,0 +1,82 @@
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: var(--background, #f5f6fa);
+}
+
+.login-page h1 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text, #333);
+}
+
+.formulario-login {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 25px;
+    width: 320px;
+
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.formulario-login div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.formulario-login div p {
+    font-size: 14px;
+    color: var(--surface, #666);
+    margin: 0;
+}
+
+.formulario-login input {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--surface, #ccc);
+    outline: none;
+    transition: 0.2s ease;
+    font-size: 14px;
+}
+
+.formulario-login input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.formulario-login button {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.formulario-login button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.formulario-login button:active {
+    transform: translateY(0);
+}
+
+/* agora bate com o JSX: className="error" */
+.error {
+    color: #e11d48;
+    font-size: 13px;
+    margin-top: 5px;
+}

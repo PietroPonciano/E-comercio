@@ -37,27 +37,27 @@ export default function Navbar() {
                         
                         <div className="navbar-nav ms-auto nav-links-container">
                             <NavLink className="nav-link" to="/">
-                                Home
+                                Início
                             </NavLink>
                             
                             <NavLink className="nav-link" to="/about">
-                                About
-                            </NavLink>
-                            
-                            <NavLink className="nav-link" to="/profile">
-                                Profile
+                                Fale Conosco
                             </NavLink>
 
                             {isLoggedIn ? (
+                                <>
+                            <NavLink className="nav-link" to="/profile">
+                                Perfil
+                            </NavLink>
                                 <button className="nav-link btn-logout" onClick={logout}>
                                     Logout
                                 </button>
+                                </>
                             ) : (
                                 <div className="auth-links">
                                     <NavLink className="nav-link" to="/login">Login</NavLink>
-                                    {/* Esconde a barra em telas pequenas (mobile) */}
                                     <span className="separator d-none d-lg-block">/</span>
-                                    <NavLink className="nav-link" to="/register">Register</NavLink>
+                                    <NavLink className="nav-link" to="/register">Criar Conta</NavLink>
                                 </div>
                             )}
                         </div>
