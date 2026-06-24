@@ -1,0 +1,71 @@
+
+.produto-card-skeleton {
+  width: 100%;
+  max-width: 240px; 
+  background: #ffffff;
+  border: 1px solid #eef2f5;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+
+.product-image-placeholder {
+  width: 100%;
+  height: 180px; 
+}
+
+
+.product-info-skeleton {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; 
+}
+
+
+.product-title-placeholder {
+  height: 12px; 
+  width: 60%;
+  border-radius: 4px;
+  margin-bottom: 4px; 
+}
+
+
+.product-text-placeholder {
+  height: 7px;
+  border-radius: 4px;
+}
+
+
+.product-price-placeholder {
+  height: 14px;
+  width: 35%;
+  border-radius: 4px;
+  margin-top: 8px; 
+}
+
+.placeholder-shimmer {
+  background: linear-gradient(90deg, #e1e7ec 25%, #edf1f4 50%, #e1e7ec 75%);
+  background-size: 200% 100%;
+  animation: shimmerEffect 1.5s infinite linear;
+}
+
+@keyframes shimmerEffect {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

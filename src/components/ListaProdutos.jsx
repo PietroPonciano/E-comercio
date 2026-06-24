@@ -4,20 +4,21 @@ import { ImageOff, PackageX } from "lucide-react";
 import "../styles/Produtos.styles.css"
 
 import { LoaderCircle } from "lucide-react"
+import ProdutoSkeleton from "./ProdutosSkeleton.jsx";
 
 export default function ListaProdutos() {
   const [page, setPage] = useState(1);
   const { data, isLoading, isFetching } = useProducts(page);
 
-  if (isLoading){
-    return (
-    <div className="loading">
-      <LoaderCircle className="icone"  size={30}/>
-      <p>Carregando primeira página...</p>
+if (isLoading) {
+  return (
+    <div className="produtos-grid">
+      {Array.from({ length: 8 }).map((_, index) => (
+        <ProdutoSkeleton key={index} />
+      ))}
     </div>
-    
-  )
-  } 
+  );
+}
 
   const produtos = data?.data || [];
   const totalPaginas = data?.pagination?.totalPages || 1;

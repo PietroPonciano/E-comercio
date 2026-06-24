@@ -30,7 +30,7 @@
 }
 .imagem-carrossel {
   width: 95%;
-  height: 100%;
+  height: 70%;
   object-fit: cover;
 
   border-radius: 12px;
@@ -40,9 +40,7 @@
     0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* =========================
-   SETAS
-========================= */
+
 
 .seta {
   position: absolute;
@@ -92,9 +90,7 @@
   right: 20px;
 }
 
-/* =========================
-   INDICADORES
-========================= */
+
 
 .indicadores {
   position: absolute;
@@ -130,9 +126,7 @@
   background: white;
 }
 
-/* =========================
-   RESPONSIVO
-========================= */
+
 
 @media (max-width: 768px) {
   .carrossel-container {

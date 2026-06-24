@@ -1,11 +1,11 @@
-/* Ajustes gerais e fontes */
+
 .elementos-nav {
     font-family: var(--font-title);
     padding: 10px 20px;
     background-color: var(--background); 
 }
 
-/* Aplicando as variáveis de cor */
+
 header, 
 .nav-link, 
 .navbar-brand h2, 
@@ -18,7 +18,7 @@ header,
     opacity: 0.8;
 }
 
-/* Container do Logo */
+
 .elemento-logo {
     display: flex;
     align-items: center;
@@ -35,19 +35,19 @@ header,
     color: var(--accent);
 }
 
-/* Alinhamento dos itens da navbar */
+
 .nav-links-container {
     align-items: center;
     gap: 10px;
 }
 
-/* Bloco de Autenticação */
+
 .auth-links {
     display: flex;
     align-items: center;
 }
 
-/* Botão de Logout para ter cara de Link */
+
 .btn-logout {
     background: none;
     border: none;
@@ -72,29 +72,29 @@ header,
 }
 
 
-/* Animacoes */
 
 
-/* Prepara o link para receber o pseudo-elemento */
+
+
 .nav-link {
     position: relative;
     transition: color 0.3s ease;
-    width: fit-content; /* Garante que a linha acompanhe o tamanho do texto no mobile */
+    width: fit-content; 
 }
 
-/* Cria a linha invisível embaixo do texto */
+
 .nav-link::after {
     content: '';
     position: absolute;
     width: 0;
     height: 2px;
-    bottom: 5px; /* Ajuste se a linha ficar muito perto do texto */
+    bottom: 5px; 
     left: 0;
-    background-color: var(--accent); /* Usa a sua cor de destaque */
+    background-color: var(--accent); 
     transition: width 0.3s ease-in-out;
 }
 
-/* Faz a linha crescer ao passar o mouse */
+
 .nav-link:hover::after {
     width: 100%;
 }

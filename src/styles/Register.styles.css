@@ -1,5 +1,5 @@
 
-.login-screen-container {
+.register-screen-container {
     min-height: 100vh;
     width: 100%;
     display: flex;
@@ -11,7 +11,7 @@
 }
 
 
-.login-card-box {
+.register-card-box {
     display: flex;
     flex-direction: column; 
     width: 100%;
@@ -42,20 +42,20 @@
     text-align: center;
 }
 
-.formulario-login {
+.formulario-register {
     display: flex;
     flex-direction: column;
     gap: 20px;
     width: 100%;
 }
 
-.formulario-login div {
+.formulario-register div {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.formulario-login div p {
+.formulario-register div p {
     font-size: 14px;
     font-weight: 600;
     color: #64748b;
@@ -99,7 +99,7 @@
     pointer-events: none;
 }
 
-.formulario-login input {
+.formulario-register input {
     width: 100%;
     padding: 14px 44px 14px 46px;
     border-radius: 12px;
@@ -112,7 +112,7 @@
     box-sizing: border-box;
 }
 
-.formulario-login input:focus {
+.formulario-register input:focus {
     background-color: #ffffff;
     border-color: var(--accent);
     box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
@@ -142,7 +142,7 @@
     color: var(--accent); 
 }
 
-.formulario-login button[type="submit"] {
+.formulario-register button[type="submit"] {
     margin-top: 10px;
     padding: 14px;
     border: none;
@@ -155,7 +155,7 @@
     transition: all 0.2s ease;
 }
 
-.formulario-login button[type="submit"]:hover:not(:disabled) {
+.formulario-register button[type="submit"]:hover:not(:disabled) {
     background: #d38806;
 }
 
@@ -190,15 +190,10 @@
 
 
 @media (min-width: 850px) {
-    .login-card-box {
-        max-width: 860px; 
-        flex-direction: row; 
-        height: 520px; 
-    }
-
-    .card-column-right {
-        display: flex; 
-        border-left: 1px solid #e2e8f0;
+    .register-card-box {
+        max-width: 900px;
+        flex-direction: row;
+        min-height: 750px;
     }
 }
 
@@ -211,4 +206,38 @@
 
 .link:hover{
     color: var(--accent);
+}
+
+.verify-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.resend-code-btn {
+    background: transparent !important;
+    border: none !important;
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0;
+}
+
+.resend-code-btn:hover:not(:disabled) {
+    text-decoration: underline;
+}
+
+.resend-code-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.success {
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 13px;
 }
