@@ -142,13 +142,33 @@ const loginUser = async (email, senha) => {
         );
     }
 
+    // --- Nova lógica de mapeamento de permissões ---
+    const mapeamentoRoles = {
+        1: 'Adm',
+        2: 'Atendente',
+        3: 'Normal'
+    };
+
+    // Define o nome da permissão ou um padrão caso venha um ID inválido do banco
+    const tipoPermissao = mapeamentoRoles[usuario.role_id] || 'Desconhecido';
+
+    // Incluindo o tipo de permissão e o role_id no JWT
     const token = jwt.sign(
-        { id: usuario.id, role_id: usuario.role_id }, 
+        { 
+            id: usuario.id, 
+            role_id: usuario.role_id,
+            permissao: tipoPermissao 
+        }, 
         process.env.JWT_SECRET, 
         { expiresIn: '1h' }
     );
 
-    return { token, usuarioId: usuario.id };
+    // Retornando os dados para o cliente
+    return { 
+        token, 
+        usuarioId: usuario.id,
+        permissao: tipoPermissao
+    };
 };
 
 const verificarEmail = async (email, codigo) => {
