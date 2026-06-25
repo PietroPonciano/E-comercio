@@ -1,0 +1,169 @@
+
+
+/* 2. ESTRUTURA DA PÁGINA */
+.ticket-page {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  font-family: var(--font-sans);
+  background: linear-gradient(
+    180deg,
+    var(--background) 0%,
+    #ffffff 100%
+  );
+  gap: 16px;
+}
+
+/* Header do Ticket */
+.ticket-header {
+  background: var(--surface);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  color: var(--text);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Sombra suavizada */
+}
+
+.ticket-header h2 {
+  margin-bottom: 12px;
+  color: var(--accent);
+  font-family: var(--font-title);
+}
+
+.ticket-header p {
+  margin: 4px 0;
+  color: var(--muted);
+}
+
+.ticket-header strong {
+  color: var(--text);
+}
+
+/* 3. CONTAINER DE MENSAGENS (CHAT) */
+.messages-container {
+  flex: 1;
+  min-height: 0; /* Evita que o flexbox ignore o overflow em alguns navegadores */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--border-radius);
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Balões de Mensagem */
+.message-card {
+  display: flex;
+  flex-direction: column;
+  max-width: 75%; /* Um pouco mais de espaço para texto */
+  padding: 12px 14px;
+  border-radius: 16px;
+  word-break: break-word;
+  gap: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+/* Minha Mensagem (Direita) */
+.my-message {
+  align-self: flex-end;
+  background: var(--accent);
+  color: var(--text); /* Garantia de contraste e leitura */
+  border-bottom-right-radius: 4px;
+}
+
+/* Mensagem do Suporte/Outro (Esquerda) */
+.other-message {
+  align-self: flex-start;
+  background: var(--surface);
+  color: var(--text);
+  border-bottom-left-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.message-card strong {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.message-card small {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  align-self: flex-end;
+}
+
+.message-card img {
+  width: 100%;
+  max-width: 280px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-top: 4px;
+}
+
+/* 4. FORMULÁRIO DE ENVIO */
+.message-form {
+  display: flex;
+  flex-direction: column;
+  color: var(--text);
+  gap: 10px;
+  padding: 16px;
+  background: var(--surface);
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Inputs e Textarea Visíveis e Elegantes */
+.message-form textarea,
+.message-form input {
+  padding: 12px;
+  border-radius: calc(var(--border-radius) - 4px);
+  border: 1px solid rgba(0, 0, 0, 0.1); 
+  background: var(--background); /* Destaca o campo do fundo branco */
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+textarea::placeholder,  input::placeholder{
+color: var(--text);
+}
+
+.message-form textarea {
+  resize: none;
+  min-height: 80px;
+}
+
+/* Feedback visual quando o usuário clica para digitar */
+.message-form textarea:focus,
+.message-form input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); /* Brilho sutil com a cor do tema */
+}
+
+/* Botão de Enviar */
+.message-form button {
+  padding: 12px;
+  border: none;
+  border-radius: calc(var(--border-radius) - 4px);
+  cursor: pointer;
+  font-weight: 600;
+  background: var(--accent);
+  color: var(--accent-text);
+  transition: transform 0.1s, filter 0.2s;
+}
+
+.message-form button:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.message-form button:active:not(:disabled) {
+  transform: scale(0.98); /* Efeito de clique físico */
+}
+
+.message-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

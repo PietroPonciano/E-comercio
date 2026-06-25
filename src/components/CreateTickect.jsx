@@ -1,33 +1,46 @@
 import { MessageCirclePlus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 
+import { useAuth } from "../context/AuthContext";
+
 import { createTicketRequest } from "../services/createTicket.service";
+
+
 
 export default function CreateTicketCTA() {
     const [title, setTitle] = useState("");
     const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState("");
     const [error, setError] = useState(null);
+
+    const { isLoggedIn } = useAuth();
 
     const navigate = useNavigate();
 
+    
+
     async function handleCreateTicket(e) {
         e.preventDefault();
-        
-        if (!title.trim()) return;
+
+        setError("");
+        setSuccess("");
 
         try {
             setLoading(true);
-            setError(null);
 
-            const data = await createTicketRequest(title);
+            await createTicketRequest(title);
 
-            setTitle(""); // Limpa o input após criar com sucesso
+            queryClient.invalidateQueries({
+                queryKey: ["my-tickets"]
+            });
 
-            // navigate(`/tickets/${data.id}`);
-        } catch (error) {
-            console.error(error);
-            setError("Ocorreu um erro ao criar o ticket. Tente novamente.");
+            setSuccess("Ticket criado com sucesso!");
+            setTitle("");
+
+
+        } catch (err) {
+            setError("Erro ao criar ticket.");
         } finally {
             setLoading(false);
         }
@@ -37,7 +50,7 @@ export default function CreateTicketCTA() {
         <section className="ticket-cta">
             <div className="ticket-cta-content">
                 <MessageCirclePlus size={48} />
-                
+
                 <h2>Ainda precisa de ajuda?</h2>
                 <p>
                     Nossa equipe está pronta para ajudar. Descreva o problema abaixo e
@@ -45,20 +58,36 @@ export default function CreateTicketCTA() {
                 </p>
 
                 <form onSubmit={handleCreateTicket} className="ticket-form">
-                    <input
-                        type="text"
-                        placeholder="Digite o título do problema"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        disabled={loading} // Evita que o usuário edite enquanto carrega
-                    />
+                    {isLoggedIn ? (
+                        <>
+                            <input
+                                type="text"
+                                placeholder="Digite o título do problema"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                disabled={loading}
+                            />
 
-                    {error && <p className="error-message">{error}</p>}
+                            {error && <p className="error-message">{error}</p>}
 
-                    {/* O botão fica desabilitado se estiver carregando ou se o input estiver vazio */}
-                    <button type="submit" disabled={loading || !title.trim()}>
-                        {loading ? "Enviando..." : "Criar Ticket"}
-                    </button>
+                            {success && (
+                                <p className="success-message">
+                                    {success}. <Link to="/tickets">Acesse seu ticket aqui!</Link>
+                                </p>
+                            )}
+
+                            <button type="submit" disabled={loading || !title.trim()}>
+                                {loading ? "Enviando..." : "Criar Ticket"}
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/login" className="link-login">
+                                Faça login para poder iniciar um atendimento.
+                            </Link>
+                        </>
+                    )}
+
                 </form>
             </div>
         </section>

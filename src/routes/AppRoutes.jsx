@@ -6,9 +6,11 @@ import Register from "../pages/Register";
 import Password from "../pages/Password";
 import ProtectedRoute from "../pages/ProtectedRoute";
 import Perfil from "../pages/Perfil";
-import AdminRoute from "../pages/AdminRoute";
+import AtendenteRoute from "../pages/AtendenteRoute";
 import Tickets from "../pages/Tickets";
 import Contact from "../pages/Contact";
+import MyTickets from "../pages/MyTickets";
+import Ticket from "../pages/Ticket";
 
 export default function AppRoutes() {
   return (
@@ -18,6 +20,7 @@ export default function AppRoutes() {
 
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<Password />} />
@@ -27,11 +30,12 @@ export default function AppRoutes() {
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route path="/profile" element={<Perfil />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route path="/my-tickets" element={<MyTickets />} />
+            <Route path="/tickets/:id" element={<Ticket />} />
           </Route>
         </Route>
 
-        <Route element={<AdminRoute />}>
+        <Route element={<AtendenteRoute />}>
           <Route element={<Layout />}>
             <Route path="/tickets" element={<Tickets />} />
           </Route>

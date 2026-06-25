@@ -45,12 +45,23 @@ export default function Navbar() {
                             <NavLink className="nav-link" to="/contact">
                                 Fale Conosco
                             </NavLink>
+                            {permission === "Atendente" && (
+                                <>
+                                    <NavLink className="nav-link" to="/tickets">
+                                        Tickets
+                                    </NavLink>
+                                </>
+                            )}
 
                             {isLoggedIn ? (
                                 <>
+                                    <NavLink className="nav-link" to="/my-tickets">
+                                        Meus Atendimentos
+                                    </NavLink>
                                     <NavLink className="nav-link" to="/profile">
                                         Perfil
                                     </NavLink>
+
                                     <button className="nav-link btn-logout" onClick={logout}>
                                         Logout
                                     </button>
@@ -63,13 +74,7 @@ export default function Navbar() {
                                 </div>
                             )}
 
-                            {permission === "Atendente" && (
-                                <>
-                                    <NavLink className="nav-link" to="/tickets">
-                                        Tickets
-                                    </NavLink>
-                                </>
-                            )}
+
                         </div>
                     </div>
 

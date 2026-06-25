@@ -1,0 +1,92 @@
+import { Link } from "react-router-dom";
+import { ShoppingCart } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+
+import "../styles/Footer.styles.css";
+
+export default function Footer() {
+    const { isLogedIn } = useAuth();
+
+    return (
+        <footer className="footer">
+            <div className="footer-container">
+
+                <div className="footer-logo">
+                    <ShoppingCart size={40} />
+                    <h2>E-commerce</h2>
+                </div>
+
+                <div className="footer-links">
+
+                    <div className="footer-column">
+                        <h4>Navegação</h4>
+
+                        <Link to="/">Início</Link>
+                        <Link to="/contact">Contato</Link>
+
+                        {isLogedIn ? (
+                            <Link to="/profile">Perfil</Link>
+                        ) : (
+                            <>
+                                <Link to="/login">Login</Link>
+                                <Link to="/register">Cadastro</Link>
+                            </>
+                        )}
+                    </div>
+
+                    <div className="footer-column">
+                        <h4>Conta</h4>
+
+                        {isLogedIn ? (
+                            <>
+                                <Link to="/profile">Minha Conta</Link>
+                                <Link to="/forgot-password">
+                                    Alterar Senha
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/login">Entrar</Link>
+                                <Link to="/register">Criar Conta</Link>
+                                <Link to="/forgot-password">
+                                    Recuperar Senha
+                                </Link>
+                            </>
+                        )}
+                    </div>
+
+                    <div className="footer-column">
+                        <h4>Suporte</h4>
+
+                        <Link to="/contact">Fale Conosco</Link>
+                        <Link to="/forgot-password">
+                            Recuperação de Senha
+                        </Link>
+                    </div>
+
+                    {isLogedIn && (
+                        <div className="footer-column">
+                            <h4>Painel</h4>
+
+                            <Link to="/tickets">
+                                Gerenciar Produtos
+                            </Link>
+
+                            <Link to="/profile">
+                                Meu Perfil
+                            </Link>
+                        </div>
+                    )}
+
+                </div>
+            </div>
+
+            <div className="footer-bottom">
+                <p>
+                    © {new Date().getFullYear()} E-commerce. Todos os direitos
+                    reservados.
+                </p>
+            </div>
+        </footer>
+    );
+}
