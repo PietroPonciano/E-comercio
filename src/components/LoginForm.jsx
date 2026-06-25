@@ -12,6 +12,7 @@ import "../styles/Login.styles.css";
 
 export default function LoginForm() {
     const { login } = useAuth();
+    const { setUserPermission } = useAuth();
     const navigate = useNavigate();
     
     const [form, setForm] = useState({
@@ -44,8 +45,10 @@ export default function LoginForm() {
                 email: form.email,
                 senha: form.senha
             });
-            
+
+            setUserPermission(response.data.permissao)
             login(response.data.token);
+
             navigate("/");
         } catch (err) {
             const errorMessage = err?.response?.data?.message || "Erro ao fazer login";
@@ -67,8 +70,6 @@ export default function LoginForm() {
     function handleVerificationSuccess() {
         setNeedsVerification(false);
         setSuccess("Email verificado. Faça login novamente.");
-        // Se preferir um alerta nativo do navegador, descomente a linha abaixo:
-        // alert("Email verificado. Faça login novamente.");
     }
 
     return (

@@ -6,52 +6,54 @@ import "../styles/Navbar.styles.css";
 
 export default function Navbar() {
     const { isLoggedIn, logout } = useAuth();
+    const { permission } = useAuth();
+
 
     return (
         <header>
-            
+
             <nav className="navbar navbar-expand-lg elementos-nav">
                 <div className="container-fluid">
-                    
-                    
+
+
                     <Link to="/" className="navbar-brand elemento-logo">
                         <ShoppingCart className="logo" size={30} />
                         <h2>E-comercio</h2>
                     </Link>
 
-                   
-                    <button 
-                        className="navbar-toggler" 
-                        type="button" 
-                        data-bs-toggle="collapse" 
-                        data-bs-target="#navbarNav" 
-                        aria-controls="navbarNav" 
-                        aria-expanded="false" 
+
+                    <button
+                        className="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                        aria-controls="navbarNav"
+                        aria-expanded="false"
                         aria-label="Toggle navigation"
                     >
                         <span className="navbar-toggler-icon"></span>
                     </button>
 
-                   
+
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        
+
                         <div className="navbar-nav ms-auto nav-links-container">
                             <NavLink className="nav-link" to="/">
                                 Início
                             </NavLink>
-                            
-                            <NavLink className="nav-link" to="/about">
+
+                            <NavLink className="nav-link" to="/contact">
                                 Fale Conosco
                             </NavLink>
 
                             {isLoggedIn ? (
                                 <>
-                            <NavLink className="nav-link" to="/profile">
-                                Perfil
-                            </NavLink>
-                                <button className="nav-link btn-logout" onClick={logout}>
-                                    Logout
-                                </button>
+                                    <NavLink className="nav-link" to="/profile">
+                                        Perfil
+                                    </NavLink>
+                                    <button className="nav-link btn-logout" onClick={logout}>
+                                        Logout
+                                    </button>
                                 </>
                             ) : (
                                 <div className="auth-links">
@@ -60,9 +62,17 @@ export default function Navbar() {
                                     <NavLink className="nav-link" to="/register">Criar Conta</NavLink>
                                 </div>
                             )}
+
+                            {permission === "Atendente" && (
+                                <>
+                                    <NavLink className="nav-link" to="/tickets">
+                                        Tickets
+                                    </NavLink>
+                                </>
+                            )}
                         </div>
                     </div>
-                    
+
                 </div>
             </nav>
         </header>

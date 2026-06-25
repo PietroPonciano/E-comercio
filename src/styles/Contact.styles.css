@@ -1,0 +1,188 @@
+.faq {
+    max-width: 900px;
+    margin: auto;
+    padding: 4rem 1.5rem;
+    font-family: var(--font-sans);
+}
+
+.faq h2 {
+    font-family: var(--font-title);
+    color: var(--text);
+    text-align: center;
+    font-size: 2rem;
+}
+
+.faq-item {
+    background: var(--background);
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.faq-item:hover {
+    transform: translateY(-2px);
+}
+
+.faq-question {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    padding: 1.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    text-align: left;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    transition: background-color 0.25s ease;
+}
+
+.faq-question:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.faq-icon {
+    font-size: 1.5rem;
+    color: var(--accent);
+    transition: transform 0.3s ease;
+}
+
+.faq-icon.open {
+    transform: rotate(45deg);
+}
+
+.faq-answer {
+    color: var(--text);
+    line-height: 1.6;
+
+    max-height: 0;
+    overflow: hidden;
+
+    transition:
+        max-height 0.35s ease,
+        padding 0.35s ease,
+        opacity 0.35s ease;
+
+    opacity: 0;
+    padding: 0 1.25rem;
+}
+
+.faq-answer.open {
+    max-height: 300px;
+    opacity: 1;
+    padding: 0 1.25rem 1.25rem;
+}
+
+.faq-answer p {
+    margin: 0;
+}
+
+.ticket-cta {
+    padding: 4rem 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.ticket-cta-content {
+    width: 100%;
+    max-width: 800px;
+
+    background: var(--background);
+    border-radius: var(--border-radius);
+
+    padding: 3rem 2rem;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    color: var(--text);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.ticket-cta-content:hover {
+    transform: translateY(-4px);
+}
+
+.ticket-cta-content svg {
+    color: var(--accent);
+}
+
+.ticket-cta-content h2 {
+    font-family: var(--font-title);
+    font-size: 2rem;
+    margin: 0;
+}
+
+.ticket-cta-content p {
+    max-width: 550px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.ticket-cta-button {
+    margin-top: 0.5rem;
+
+    background: var(--accent);
+    color: var(--text);
+
+    border: none;
+    border-radius: var(--border-radius);
+
+    padding: 0.9rem 1.8rem;
+
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.ticket-cta-button:hover {
+    transform: scale(1.05);
+    opacity: 0.95;
+}
+
+.ticket-cta-button:active {
+    transform: scale(0.98);
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.6);
+
+    z-index: 99999;
+}
+
+.modal-content {
+    background: var(--surface);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+
+    min-width: 320px;
+    color: var(--text);
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}

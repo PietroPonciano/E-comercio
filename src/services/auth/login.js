@@ -6,9 +6,6 @@ export async function loginRequest(data) {
         senha: data.senha
     });
 
-    const { token } = response.data.data;
-
-    sessionStorage.setItem("token", token);
 
     return response.data;
 }

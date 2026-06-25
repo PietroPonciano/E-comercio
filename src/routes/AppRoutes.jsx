@@ -6,13 +6,16 @@ import Register from "../pages/Register";
 import Password from "../pages/Password";
 import ProtectedRoute from "../pages/ProtectedRoute";
 import Perfil from "../pages/Perfil";
+import AdminRoute from "../pages/AdminRoute";
+import Tickets from "../pages/Tickets";
+import Contact from "../pages/Contact";
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
 
-        
+
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -20,10 +23,17 @@ export default function AppRoutes() {
           <Route path="/forgot-password" element={<Password />} />
         </Route>
 
-        
+
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route path="/profile" element={<Perfil />} />
+            <Route path="/contact" element={<Contact />} />
+          </Route>
+        </Route>
+
+        <Route element={<AdminRoute />}>
+          <Route element={<Layout />}>
+            <Route path="/tickets" element={<Tickets />} />
           </Route>
         </Route>
 
