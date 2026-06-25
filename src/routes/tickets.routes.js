@@ -18,6 +18,9 @@ router.get('/all', verificarToken, verificarSuporte, TicketController.getAllTick
 // Detalhes completos de um ticket específico
 router.get('/:id', verificarToken, validarIdNumerico, verificarSuporte, TicketController.getById);
 
+// Detalhes completos de um ticket específico
+router.get('/my/:id', verificarToken, validarIdNumerico, TicketController.getByIdComoCliente);
+
 // Criar um novo ticket
 router.post('/', verificarToken, TicketController.create);
 

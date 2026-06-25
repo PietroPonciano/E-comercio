@@ -60,6 +60,20 @@ const getById = async (req, res) => {
     }
 };
 
+const getByIdComoCliente = async (req, res) => {
+    try {
+        // Passa o ID do ticket e o objeto do usuário vindo do token
+        const ticket = await TicketService.obterDetalhesTicketComoCliente(req.params.id, req.usuario);
+
+        return res.status(200).json({
+            success: true,
+            data: ticket
+        });
+    } catch (error) {
+        return respostaErro(res, error);
+    }
+};
+
 const create = async (req, res) => {
     try {
         const { error, value } = createTicketSchema.validate(req.body);
@@ -158,5 +172,6 @@ module.exports = {
     addMessage,
     assignTicket,
     updateStatus,
-    remove
+    remove,
+    getByIdComoCliente
 };

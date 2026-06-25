@@ -83,6 +83,10 @@ const listarMeusTickets = async (usuarioId, { page = 1, limit = 10 }) => {
             ]
         ],
         include: [
+            
+            { model: Usuario, as: 'cliente', attributes: ['id', 'nome', 'email'] },
+            
+            
             { model: Usuario, as: 'atendente', attributes: ['id', 'nome', 'email'] }
         ],
         limit: limitNumber,
@@ -298,6 +302,47 @@ const excluirTicket = async (ticketId, usuario) => {
     });
 };
 
+const obterDetalhesTicketComoCliente = async (id, usuario) => {
+    const ticket = await Ticket.findByPk(id, {
+        include: [
+            { model: Usuario, as: 'cliente', attributes: ['id', 'nome', 'email'] },
+            { model: Usuario, as: 'atendente', attributes: ['id', 'nome', 'email'] },
+            {
+                model: Mensagem,
+                as: 'mensagens',
+                attributes: ['id', 'mensagem', 'imagem_url', 'createdAt'],
+                include: [{ model: Usuario, as: 'autor', attributes: ['id', 'nome', 'email'] }]
+            }
+        ],
+        order: [[{ model: Mensagem, as: 'mensagens' }, 'createdAt', 'ASC']]
+    });
+
+    
+    if (!ticket) {
+        throw criarErro("Ticket não encontrado.", 404);
+    }
+
+    
+    if (ticket.usuario_id !== usuario.id) {
+        throw criarErro("Acesso negado. Você não tem permissão para ver este ticket.", 403);
+    }
+
+  
+    const ticketJson = ticket.toJSON();
+    return {
+        id: ticketJson.id,
+        titulo: ticketJson.titulo,
+        status: ticketJson.status,
+        data_inicializacao: ticketJson.data_inicializacao,
+        data_finalizacao: ticketJson.data_finalizacao,
+        createdAt: ticketJson.createdAt,
+        cliente: formatarUsuario(ticketJson.cliente),
+        atendente: formatarUsuario(ticketJson.atendente),
+        mensagens: ticketJson.mensagens.map(formatarMensagem),
+        quantidade_mensagens: ticketJson.mensagens.length
+    };
+};
+
 module.exports = {
     listarMeusTickets,
     listarTodosTickets,
@@ -306,5 +351,6 @@ module.exports = {
     adicionarMensagem,
     assumirTicket,
     alterarStatus,
-    excluirTicket
+    excluirTicket,
+    obterDetalhesTicketComoCliente
 };
