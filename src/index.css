@@ -29,6 +29,7 @@
   margin: 0px;
   padding: 0px;
   font-family: var(--font-sans);
+  
 }
 
 /* Animação de entrada da Navbar ao carregar a página */
@@ -41,5 +42,18 @@
         transform: translateY(0);
         opacity: 1;
     }
+}
+
+.erro-carregamento{
+  font-family: var(--font-title);
+  color: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px 0 40px 0;
+  gap: 10px;
+}
+.icone-erro-carregamento{
+  color: red;
 }
 

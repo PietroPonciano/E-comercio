@@ -1,0 +1,151 @@
+/* Alinhamento de Layout idêntico ao Chat Real */
+.chat-wrapper-sk {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    background-color: #f4f6f8;
+}
+
+/* Animação e Estilo Base dos Skeletons */
+.sk-chat-item {
+    background-color: #e2e8f0;
+    border-radius: 4px;
+    animation: sk-chat-pulse 1.5s infinite ease-in-out;
+}
+
+/* Top Bar Skeleton */
+.chat-header-sk {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.chat-header-info-sk {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 40%;
+}
+
+.sk-chat-header-title {
+    width: 80%;
+    height: 18px;
+}
+
+.sk-chat-header-subtitle {
+    width: 40%;
+    height: 12px;
+}
+
+.sk-chat-info-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+/* Messages Area Skeleton */
+.chat-messages-area-sk {
+    flex: 1;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.message-row-sk {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    align-items: flex-end;
+}
+
+.row-other-sk {
+    justify-content: flex-start;
+}
+
+.row-me-sk {
+    flex-direction: row-reverse;
+}
+
+/* Avatar Redondo */
+.sk-chat-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.message-bubble-wrapper-sk {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.row-me-sk .message-bubble-wrapper-sk {
+    align-items: flex-end;
+}
+
+.sk-chat-author {
+    width: 70px;
+    height: 11px;
+}
+
+.sk-chat-bubble {
+    height: 40px;
+    border-radius: 14px;
+}
+
+.row-other-sk .sk-chat-bubble {
+    border-bottom-left-radius: 4px;
+}
+
+.row-me-sk .sk-chat-bubble {
+    border-bottom-right-radius: 4px;
+}
+
+.sk-chat-time {
+    width: 45px;
+    height: 10px;
+}
+
+/* Bottom Bar Skeleton */
+.chat-footer-sk {
+    background-color: #ffffff;
+    padding: 16px 24px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.input-actions-group-sk {
+    display: flex;
+    align-items: center;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    padding: 4px 8px;
+    gap: 8px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.sk-chat-input-field {
+    flex: 1;
+    height: 20px;
+    background-color: #e2e8f0;
+}
+
+.sk-chat-input-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+@keyframes sk-chat-pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}

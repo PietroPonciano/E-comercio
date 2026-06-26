@@ -72,12 +72,12 @@ export default function CreateTicketCTA() {
 
                             {success && (
                                 <p className="success-message">
-                                    {success}. <Link to="/tickets">Acesse seu ticket aqui!</Link>
+                                    {success}. <Link to="/tickets">Acesse seu atendimento aqui!</Link>
                                 </p>
                             )}
 
                             <button type="submit" disabled={loading || !title.trim()}>
-                                {loading ? "Enviando..." : "Criar Ticket"}
+                                {loading ? "Enviando..." : "Criar Atendimento"}
                             </button>
                         </>
                     ) : (

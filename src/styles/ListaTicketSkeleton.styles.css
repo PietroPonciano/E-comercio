@@ -1,0 +1,83 @@
+/* Container principal combinando com a estrutura original */
+.tickets-container-sk {
+    width: 90%;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: solid #f8fafc;
+    margin: 20px auto;
+}
+
+.tickets-header-sk {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    padding: 12px 20px;
+    background-color: #f1f5f9;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+    border-bottom: 1px solid #e2e8f0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.text-right-sk {
+    text-align: right;
+}
+
+.ticket-row-sk {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    align-items: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* Animação Base de Pulsação (Idêntica à imagem de referência) */
+.sk-item {
+    background-color: #e2e8f0;
+    border-radius: 4px;
+    animation: sk-pulse 1.5s infinite ease-in-out;
+}
+
+.sk-title {
+    width: 75%;
+    height: 16px;
+}
+
+.sk-id {
+    width: 40%;
+    height: 14px;
+}
+
+.sk-badge {
+    width: 80px;
+    height: 22px;
+    border-radius: 6px;
+}
+
+.ticket-actions-sk {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.sk-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+}
+
+@keyframes sk-pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
