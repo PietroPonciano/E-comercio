@@ -30,11 +30,11 @@ export default function Password() {
             </div>
 
             {step === 1 && (
-                <EmailStep onSuccess={() => setStep(2)} />
+                <EmailStep onSuccess={handleEmailSuccess} />
             )}
 
             {step === 2 && (
-                <ResetPasswordStep />
+                <ResetPasswordStep email={email} />
             )}
         </>
     );

@@ -48,7 +48,7 @@ export default function Navbar() {
                             {permission === "Atendente" && (
                                 <>
                                     <NavLink className="nav-link" to="/tickets">
-                                        Tickets
+                                        Atendimentos
                                     </NavLink>
                                 </>
                             )}

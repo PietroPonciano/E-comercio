@@ -1,0 +1,133 @@
+.ticket-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    cursor: pointer;
+    transition: .2s ease;
+    padding: 24px; 
+    background: var(--background);
+    border: 1px solid var(--muted);
+    border-radius: 12px;
+    
+    
+    transition: all 0.2s ease;
+}
+
+
+.ticket-card:hover {
+    border-color: var(--accent, #a1a1aa);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    transform: translateY(-2px);
+}
+
+.ticket-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px; 
+}
+
+.ticket-card-header h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+}
+
+.ticket-card-header span {
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.ticket-card-header select {
+    padding: 8px 32px 8px 12px; 
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    
+    background: var(--background); 
+    border: 1px solid var(--muted);
+    border-radius: 8px;
+    
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.ticket-card-header select:hover {
+    border-color: var(--text);
+}
+
+.ticket-card-header select:focus {
+    border-color: var(--accent, #3b82f6);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.ticket-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ticket-card-body p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.5; 
+}
+
+.ticket-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    
+    margin-top: 4px;
+    padding-top: 16px;
+    border-top: 1px solid var(--muted); 
+}
+
+.ticket-card-actions button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    padding: 10px 18px;
+    
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    
+    background: var(--background);
+    border: 1px solid var(--muted);
+    border-radius: 8px;
+    
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+
+.ticket-card-actions button:not(:disabled):hover {
+    background: var(--muted);
+    transform: scale(0.98); 
+}
+
+.ticket-card-actions button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(100%);
+}
+
+
+.ticket-card-actions .danger {
+    background: #ef4444; 
+    color: white;
+    border-color: #ef4444;
+}
+
+.ticket-card-actions .danger:not(:disabled):hover {
+    background: #dc2626;
+    border-color: #dc2626;
+}

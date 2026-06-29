@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMyTickets } from "../hooks/useTickets";
 import { useNavigate } from "react-router-dom";
 
-import { Eye, EyeOff, ExternalLink } from "lucide-react"; 
+import { Eye, EyeOff, ExternalLink, TicketX } from "lucide-react";
 import ListaTicketSkeleton from "./ListaTicketSkeleton";
 import ErroPersonalizado from "./ErroPersonalizado";
 
@@ -21,16 +21,23 @@ export default function MyTicketsList() {
 
     const texto = "os seus atendimentos"
 
-    if (isLoading) return <ListaTicketSkeleton /> ;
-    if (error) return <ErroPersonalizado value={texto}/>
+    if (isLoading) return <ListaTicketSkeleton />;
+    if (error) return <ErroPersonalizado value={texto} />
 
     const tickets = data?.data ?? [];
 
     if (tickets.length === 0) {
-        return <p className="empty-text">Você não possui tickets ativos.</p>;
+        return (
+            <>
+                <div className="erro-atendimento">
+                    <TicketX size={30} className="ticket"/>
+                    <p>Você não possuí atendimentos.</p>
+                </div>
+            </>
+        );
     }
 
-    
+
     const getStatusClass = (status) => {
         switch (status?.toLowerCase()) {
             case "aberto": return "badge-open";
@@ -42,7 +49,7 @@ export default function MyTicketsList() {
 
     return (
         <div className="tickets-container">
-            
+
             <div className="tickets-header">
                 <div>Título do Atendimento</div>
                 <div>ID</div>
@@ -61,11 +68,11 @@ export default function MyTicketsList() {
                                 <div className="ticket-title" title={ticket.titulo}>
                                     {ticket.titulo}
                                 </div>
-                                
+
                                 <div className="ticket-id">
                                     #{ticket.id}
                                 </div>
-                                
+
                                 <div className="ticket-status">
                                     <span className={`status-badge ${getStatusClass(ticket.status)}`}>
                                         {ticket.status}
@@ -74,17 +81,17 @@ export default function MyTicketsList() {
 
                                 <div className="ticket-actions">
                                     {/* Botão Mais Detalhes (Alterna o Ícone do Olho) */}
-                                    <button 
-                                        className="action-btn" 
+                                    <button
+                                        className="action-btn"
                                         onClick={() => toggleDetails(ticket.id)}
                                         title={isExpanded ? "Ocultar detalhes" : "Mais detalhes"}
                                     >
                                         {isExpanded ? <EyeOff size={18} /> : <Eye size={18} />}
                                     </button>
-                                    
+
                                     {/* Botão Ir para o Ticket */}
-                                    <button 
-                                        className="action-btn primary-action" 
+                                    <button
+                                        className="action-btn primary-action"
                                         onClick={() => navigate(`/tickets/${ticket.id}`)}
                                         title="Ir para o atendimento"
                                     >

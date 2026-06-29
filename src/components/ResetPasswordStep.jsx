@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { resetPasswordRequest } from "../services/auth/resetPassword";
+import { useNavigate } from "react-router-dom";
 
-export default function ResetPasswordStep() {
+
+export default function ResetPasswordStep({ email }) {
     const [codigo, setCodigo] = useState("");
     const [senha, setSenha] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [loading, setLoading] = useState(false);
-
+    const navigate = useNavigate();
+    
     async function handleSubmit(e) {
         e.preventDefault();
         setError("");
@@ -16,7 +19,7 @@ export default function ResetPasswordStep() {
         try {
             setLoading(true);
 
-            const response = await resetPasswordRequest({
+            const response = await resetPasswordRequest(email, {
                 codigo,
                 senha
             });
@@ -24,6 +27,10 @@ export default function ResetPasswordStep() {
             if (response.success) {
                 setSuccess("Senha alterada com sucesso.");
             }
+
+            setTimeout(() => {
+                navigate("/"); 
+            }, 2000);
         } catch (err) {
             setError(
                 err?.response?.data?.message ||
