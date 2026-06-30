@@ -1,6 +1,6 @@
 import React from "react";
 import Carrossel from "../components/Carrossel.jsx";
-import ListaProdutos from "../components/ListaProdutos.jsx";
+import ListaProdutos from "../components/Products/ListaProdutos.jsx";
 
 
 export default function Home() {

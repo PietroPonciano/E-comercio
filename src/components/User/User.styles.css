@@ -1,0 +1,172 @@
+.user-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.user-search {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.user-search-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.user-search-field label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--surface);
+    opacity: 0.6;
+}
+
+.user-search-field input {
+    padding: 10px 12px;
+    border: 1px solid var(--muted);
+    border-radius: var(--border-radius);
+    font-size: 0.95rem;
+    color: var(--surface);
+    background: var(--text);
+}
+
+.user-search-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 10px 18px;
+    border: none;
+    border-radius: var(--border-radius);
+    background: var(--primary);
+    color: var(--text);
+    cursor: pointer;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+}
+
+.user-search-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.user-search-hint {
+    color: var(--surface);
+    opacity: 0.6;
+    font-size: 0.95rem;
+}
+
+.user-card {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    padding: 40px;
+    background: var(--background);
+    border: 1px solid var(--muted);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.user-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.user-card-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-title);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.user-card-edit {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 8px 16px;
+    border: 1px solid var(--muted);
+    border-radius: var(--border-radius);
+    background: transparent;
+    cursor: pointer;
+
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text);
+    transition: background 0.2s ease;
+}
+
+.user-card-edit:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.user-card-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.user-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--muted);
+}
+
+.user-field:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.user-field label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text);
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.user-field p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--text);
+    word-break: break-word;
+}
+
+.section-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+
+.section-spinner {
+    animation: spin 1s linear infinite;
+    color: var(--background);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

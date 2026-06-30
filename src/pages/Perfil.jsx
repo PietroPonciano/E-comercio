@@ -1,11 +1,11 @@
-import "../styles/Profile.styles.css";
+import "../components/Profile/Profile.styles.css";
 import { useState, useEffect } from "react";
 import { useProfile } from "../hooks/useProfile";
 
-import ProfileSidebar from "../components/ProfileSidebar";
-import ProfileSection from "../components/ProfileSection";
-import AddressSection from "../components/AddressSection";
-import ProfileSkeleton from "../components/ProfileSkeleton";
+import ProfileSidebar from "../components/Profile/ProfileSidebar";
+import ProfileSection from "../components/Profile/ProfileSection";
+import AddressSection from "../components/Profile/AddressSection";
+import ProfileSkeleton from "../components/Profile/ProfileSkeleton";
 
 export default function Perfil() {
     const { data, isLoading } = useProfile();

@@ -1,4 +1,4 @@
-import CreateTicketCTA from "../components/CreateTickect";
+import CreateTicketCTA from "../components/Tickets/CreateTickect";
 import FAQ from "../components/Faq";
 
 import "../styles/Contact.styles.css"

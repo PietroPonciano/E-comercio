@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
-import "../styles/Footer.styles.css";
+import "./Footer.styles.css";
 
 export default function Footer() {
-    const { isLogedIn } = useAuth();
+    const { isLoggedIn, logout, Atendente, Adm, permission } = useAuth();
 
     return (
         <footer className="footer">
@@ -24,7 +24,7 @@ export default function Footer() {
                         <Link to="/">Início</Link>
                         <Link to="/contact">Contato</Link>
 
-                        {isLogedIn ? (
+                        {isLoggedIn ? (
                             <Link to="/profile">Perfil</Link>
                         ) : (
                             <>
@@ -32,16 +32,28 @@ export default function Footer() {
                                 <Link to="/register">Cadastro</Link>
                             </>
                         )}
+
+                        {permission === Atendente && <>
+                            <Link to="/tickets">Atendimento</Link>
+                        </>}
+
+                        
+                        {permission === Adm && <>
+                            <Link to="/painel">Painel</Link>
+                        </>}
                     </div>
 
                     <div className="footer-column">
                         <h4>Conta</h4>
 
-                        {isLogedIn ? (
+                        {isLoggedIn ? (
                             <>
                                 <Link to="/profile">Minha Conta</Link>
                                 <Link to="/forgot-password">
                                     Alterar Senha
+                                </Link>
+                                <Link onClick={logout}>
+                                    Logout
                                 </Link>
                             </>
                         ) : (
@@ -64,7 +76,7 @@ export default function Footer() {
                         </Link>
                     </div>
 
-                    {isLogedIn && (
+                    {isLoggedIn && (
                         <div className="footer-column">
                             <h4>Painel</h4>
 

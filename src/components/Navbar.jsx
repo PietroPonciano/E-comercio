@@ -2,10 +2,10 @@ import { Link, NavLink } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
-import "../styles/Navbar.styles.css";
+import "./Navbar.styles.css";
 
 export default function Navbar() {
-    const { isLoggedIn, logout } = useAuth();
+    const { isLoggedIn, logout, Atendente, Adm } = useAuth();
     const { permission } = useAuth();
 
 
@@ -43,12 +43,20 @@ export default function Navbar() {
                             </NavLink>
 
                             <NavLink className="nav-link" to="/contact">
-                                Fale Conosco
+                                Contato
                             </NavLink>
-                            {permission === "Atendente" && (
+                            {(permission === Adm || permission === Atendente) && (
                                 <>
                                     <NavLink className="nav-link" to="/tickets">
                                         Atendimentos
+                                    </NavLink>
+                                </>
+                            )}
+
+                            {permission === Adm && (
+                                <>
+                                    <NavLink className="nav-link" to="/painel">
+                                        Painel 
                                     </NavLink>
                                 </>
                             )}

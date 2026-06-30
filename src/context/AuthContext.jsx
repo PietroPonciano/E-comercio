@@ -6,6 +6,10 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [permission, setPermission] = useState(null);
 
+  const Atendente = "Atendente"
+  const Adm = "Adm"
+
+
   useEffect(() => {
     const storedToken = sessionStorage.getItem("token");
     const storedPermission = sessionStorage.getItem("Permission");
@@ -38,7 +42,8 @@ export function AuthProvider({ children }) {
   };
 
   const isLoggedIn = !!token;
-  
+
+
   return (
     <AuthContext.Provider
       value={{
@@ -48,6 +53,8 @@ export function AuthProvider({ children }) {
         login,
         logout,
         setUserPermission,
+        Adm,
+        Atendente
       }}
     >
       {children}

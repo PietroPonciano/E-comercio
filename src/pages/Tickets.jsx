@@ -1,4 +1,4 @@
-import TicketSection from "../components/TicketSection";
+import TicketSection from "../components/Tickets/TicketSection";
 import { useAllTickets } from "../hooks/useAllTickets";
 
 export default function Tickets() {

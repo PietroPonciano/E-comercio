@@ -1,8 +1,8 @@
 import { useState } from "react";
-import EmailStep from "../components/EmailStep";
-import ResetPasswordStep from "../components/ResetPasswordStep";
+import EmailStep from "../components/Auth/EmailStep";
+import ResetPasswordStep from "../components/Auth/ResetPasswordStep";
 
-import "../styles/Password.styles.css"
+import "../components/Auth/Password.styles.css"
 
 export default function Password() {
     const [step, setStep] = useState(1);

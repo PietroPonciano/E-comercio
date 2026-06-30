@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/Carrossel.styles.css';
+import './Carrossel.styles.css';
 
 export default function Carrossel({ imagens }) {
     const [indiceAtual, setIndiceAtual] = useState(0);
