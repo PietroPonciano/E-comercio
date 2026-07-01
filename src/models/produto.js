@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
   class Produto extends Model {
     static associate(models) {
       Produto.belongsTo(models.Categoria, { foreignKey: 'categoria_id', as: 'categoria' });
-      // Se futuramente criar a tabela pivô (ex: ItemCompra), a associação entrará aqui:
-      // Produto.hasMany(models.ItemCompra, { foreignKey: 'produto_id', as: 'itens' });
+      Produto.hasMany(models.ItemCompra, { foreignKey: 'produto_id', as: 'itens_compra' });
+      Produto.hasMany(models.ItemCarrinho, { foreignKey: 'produto_id', as: 'itens_carrinho' });
     }
   }
   Produto.init({

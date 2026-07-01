@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       Compra.belongsTo(models.Usuario, { foreignKey: 'usuario_id', as: 'usuario' });
       Compra.belongsTo(models.FormaPagamento, { foreignKey: 'forma_pagamento_id', as: 'forma_pagamento' });
       Compra.belongsTo(models.FormaEntrega, { foreignKey: 'forma_entrega_id', as: 'forma_entrega' });
+      Compra.hasMany(models.ItemCompra, { foreignKey: 'compra_id', as: 'itens' });
     }
   }
   Compra.init({
@@ -69,6 +70,15 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: { msg: "A forma de entrega é obrigatória." }
       }
+    },
+    mp_preference_id: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    mp_payment_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true
     }
   }, {
     sequelize,

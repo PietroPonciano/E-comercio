@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       Usuario.belongsTo(models.Role, { foreignKey: 'role_id', as: 'role' });
       
       Usuario.hasMany(models.Compra, { foreignKey: 'usuario_id', as: 'compras' });
+      Usuario.hasOne(models.Carrinho, { foreignKey: 'usuario_id', as: 'carrinho' });
       Usuario.hasMany(models.Ticket, { foreignKey: 'usuario_id', as: 'tickets_abertos' });
       Usuario.hasMany(models.Ticket, { foreignKey: 'atendente_id', as: 'tickets_atendidos' });
       Usuario.hasMany(models.Mensagem, { foreignKey: 'usuario_id', as: 'mensagens' });
