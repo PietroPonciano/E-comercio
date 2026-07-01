@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useProducts } from "../../hooks/useProducts.js";
+import { useCart } from "../../context/CartContext";
 import { ImageOff, PackageX } from "lucide-react";
 import "./Produtos.styles.css";
 
@@ -9,6 +11,7 @@ import ProdutoSkeleton from "./ProdutosSkeleton.jsx";
 export default function ListaProdutos() {
   const [page, setPage] = useState(1);
   const { data, isLoading, isFetching } = useProducts(page);
+  const { addItem } = useCart();
 
 if (isLoading) {
   return (
@@ -37,21 +40,30 @@ if (isLoading) {
         ) : (
           produtos.map((product) => (
             <div key={product.id} className="produto-card">
-              <div className="product-image-container">
-                {product.imagem_url ? (
-                  <img
-                    src={product.imagem_url}
-                    alt={product.nome}
-                    style={{ maxWidth: "100%", maxHeight: "100%" }}
-                  />
-                ) : (
-                  <ImageOff size={48} color="#999" />
-                )}
-              </div>
+              <Link to={`/products/${product.id}`} className="produto-card-link">
+                <div className="product-image-container">
+                  {product.imagem_url ? (
+                    <img
+                      src={product.imagem_url}
+                      alt={product.nome}
+                      style={{ maxWidth: "100%", maxHeight: "100%" }}
+                    />
+                  ) : (
+                    <ImageOff size={48} color="#999" />
+                  )}
+                </div>
 
-              <h5>{product.nome}</h5>
-              <p>{product.descricao}</p>
-              <p className="preco">R$ {product.preco.toFixed(2)}</p>
+                <h5>{product.nome}</h5>
+                <p>{product.descricao}</p>
+                <p className="preco">R$ {product.preco.toFixed(2)}</p>
+              </Link>
+              <button
+                type="button"
+                className="produto-add-btn"
+                onClick={() => addItem(product)}
+              >
+                Adicionar ao carrinho
+              </button>
             </div>
           ))
         )}

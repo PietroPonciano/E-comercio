@@ -61,6 +61,19 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.produto-card-link {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.produto-card-link:hover h5 {
+  color: var(--background);
+}
+
 .produto-card:hover {
   transform: translateY(-5px); 
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
@@ -154,4 +167,21 @@
   color: #6b7280;
   text-align: center;
   gap: 8px;
+}
+
+.produto-add-btn {
+  margin-top: auto;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #1f2937;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.produto-add-btn:hover {
+  opacity: 0.9;
 }

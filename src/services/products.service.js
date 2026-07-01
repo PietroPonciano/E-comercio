@@ -8,6 +8,11 @@ export async function getProducts({ page = 1 } = {}) {
     return data;
 }
 
+export async function getProductById(id) {
+    const { data } = await api.get(`/products/${id}`);
+    return data;
+}
+
 export async function createProduct(payload) {
     const { data } = await api.post("/products", payload);
     return data;

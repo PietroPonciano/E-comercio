@@ -1,12 +1,14 @@
 import { Link, NavLink } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 
 import "./Navbar.styles.css";
 
 export default function Navbar() {
     const { isLoggedIn, logout, Atendente, Adm } = useAuth();
     const { permission } = useAuth();
+    const { totalItems } = useCart();
 
 
     return (
@@ -45,6 +47,14 @@ export default function Navbar() {
                             <NavLink className="nav-link" to="/contact">
                                 Contato
                             </NavLink>
+
+                            <NavLink className="nav-link navbar-cart-link" to="/carrinho">
+                                <ShoppingCart size={18} />
+                                Carrinho
+                                {totalItems > 0 && (
+                                    <span className="navbar-cart-badge">{totalItems}</span>
+                                )}
+                            </NavLink>
                             {(permission === Adm || permission === Atendente) && (
                                 <>
                                     <NavLink className="nav-link" to="/tickets">
@@ -65,6 +75,9 @@ export default function Navbar() {
                                 <>
                                     <NavLink className="nav-link" to="/my-tickets">
                                         Meus Atendimentos
+                                    </NavLink>
+                                    <NavLink className="nav-link" to="/my-orders">
+                                        Minhas Compras
                                     </NavLink>
                                     <NavLink className="nav-link" to="/profile">
                                         Perfil
