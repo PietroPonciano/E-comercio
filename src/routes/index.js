@@ -8,6 +8,7 @@ const categoriasRoutes = require('./categorias.routes');
 const usuarioRoutes = require('./usuario.routes');
 const compraRoutes = require('./compra.routes');
 const pagamentosRoutes = require('./pagamentos.routes');
+const formaEntregaRoutes = require('./formaentrega.routes');
 
 // 2. Exportamos uma função que recebe o 'app' do arquivo principal
 module.exports = (app) => {
@@ -28,4 +29,5 @@ module.exports = (app) => {
     app.use('/api/users', usuarioRoutes);
     app.use('/api/orders', compraRoutes);
     app.use('/api/payments', pagamentosRoutes);
+    app.use('/api/shipping-methods', formaEntregaRoutes);
 };

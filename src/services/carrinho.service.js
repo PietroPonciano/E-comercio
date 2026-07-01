@@ -117,19 +117,19 @@ const prepararCheckout = async ({ usuarioId, itens, formaEntregaId, enderecoEntr
 
 const montarItensMercadoPago = (itensValidados, formaEntrega, frete) => {
     const itensMP = itensValidados.map((item) => ({
-        id: String(item.produto_id),
-        title: item.produto.nome,
-        quantity: item.quantidade,
-        unit_price: paraNumero(item.produto.preco),
+        title: String(item.produto.nome),
+        quantity: Number.parseInt(item.quantidade, 10),
+        unit_price: Number(paraNumero(item.produto.preco).toFixed(2)),
         currency_id: 'BRL'
     }));
 
-    if (frete > 0) {
+    const valorFrete = Number(paraNumero(frete).toFixed(2));
+
+    if (valorFrete > 0) {
         itensMP.push({
-            id: 'frete',
             title: `Frete - ${formaEntrega.nome}`,
             quantity: 1,
-            unit_price: frete,
+            unit_price: valorFrete,
             currency_id: 'BRL'
         });
     }
